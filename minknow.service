@@ -1,0 +1,20 @@
+[Unit]
+Description=MinKNOW Instrument Software for MinIT (daemon)
+
+[Service]
+ExecStart=/opt/ont/minknow/bin/mk_manager_svc
+WorkingDirectory=/opt/ont/minknow
+KillMode=mixed
+User=root
+Group=root
+SyslogIdentifier=minknow
+LogsDirectory=minknow
+LimitCORE=infinity
+LimitNICE=40
+NoNewPrivileges=true
+ExecStartPre=/bin/sleep 15
+CPUQuota=300%
+
+
+[Install]
+WantedBy=multi-user.target

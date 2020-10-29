@@ -1,0 +1,6 @@
+minknow-core-minit-offline
+ont-bream4-minit
+ont-configuration-customer-minit
+ont-kingfisher-ui-minit
+ont-remote-support
+ont-system-identification

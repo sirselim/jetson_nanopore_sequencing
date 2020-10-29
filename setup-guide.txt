@@ -1,0 +1,79 @@
+# 0. pre-setup
+# fresh inistall of Nvidia Jetson JetPack
+# create user: minit with pw: minit
+
+
+# 1. get everything together before we start
+# ensure in /home/minit dir
+cd ~/
+# clone repo
+git clone https://github.com/sirselim/jetson_nanopore_sequencing.git
+cd ./jetson_nanopore_sequencing
+# download guppy from ONT servers
+wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_4.0.15_linuxaarch64_cuda10.tar.gz
+# extract required packages
+tar -xzvf ont-guppy_4.0.15_linuxaarch64_cuda10.tar.gz
+unzip h5py.zip 
+
+
+# 2. full system update and upgrade
+# shouldn't take long with latest JetPack
+sudo apt update
+sudo apt upgrade
+
+
+# 3. mount ssd (this should be properly done, place holder for now)
+sudo mkdir /xavier_ssd
+sudo mkdir /xavier_ssd/minknow
+sudo mount /dev/nvme0n1p1 /xavier_ssd/
+
+
+# 4. add nanopore repo to system and update
+sudo cp nanoporetech.list /etc/apt/sources.list.d/
+sudo apt update
+
+
+# 5. install ont packages
+# 6 packages required:
+# - ont-bream4-minit 
+# - ont-kingfisher-ui-minit 
+# - ont-remote-support 
+# - ont-system-identification 
+# - ont-configuration-customer-minit 
+# - minknow-core-minit-offline
+# BUT we can use the predefined list of packages
+cat ont-package-list-xavier.txt | xargs sudo apt-get install
+
+
+# 6. copy guppy to correct location, create sym links and check links and guppy version
+sudo cp -r ont-guppy /opt/ont/
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller /usr/bin/guppy_basecaller
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_server /usr/bin/guppy_basecall_server
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_barcoder /usr/bin/guppy_barcoder
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_aligner /usr/bin/guppy_aligner
+guppy_basecaller --version
+guppy_basecall_server --version
+guppy_aligner --version
+guppy_barcoder --version
+
+
+# 7. edit the minknow conf files to change the location of data and check guppy paths and parameters
+cd /opt/ont/minknow/conf
+sudo nano user_conf 
+sudo nano app_conf
+
+
+# 8. install libhdf5-dev and copy across pre-compiled h5py (after removing old version)
+# move back to git repo dir 
+cd ~/jetson_nanopore_sequencing
+sudo apt install libhdf5-dev
+sudo rm -rf /opt/ont/minknow/ont-python/lib/python3.7/site-packages/h5py/
+sudo cp -r h5py/ /opt/ont/minknow/ont-python/lib/python3.7/site-packages/
+
+
+# 9. copy minknow.service for systemd set up and restart the service
+sudo cp minknow.service /etc/systemd/system/
+service minknow restart
+# check
+service minknow status
+# can check that the services are running as root with htop
