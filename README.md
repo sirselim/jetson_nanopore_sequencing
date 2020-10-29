@@ -5,9 +5,9 @@ A place to collate notes and resources of our journey into porting nanopore sequ
 A brief description of the included files in this repo. To understand more please look at the `setup-guide.txt` file.
 
 * `setup-guide.txt`: a quick guide giving the basic steps to reproduce a running MinKnow environment on Jetson Xavier NX and AGX
-* `nanoporetech.list`: ONT MinIT repository file to be place in `/etc/apt/sources.list.d/`
+* `nanoporetech.list`: ONT MinIT repository file to be placed in `/etc/apt/sources.list.d/`
 * `ont-package-list-xavier.txt`: list of all ONT packages that need to be installed
-* `minknow.service`: this is a systemd config file that correct loads the minknow service
+* `minknow.service`: this is a systemd config file that correctly loads the minknow service as the root user
 
 ## [this is still very much under construction]
 
