@@ -4,11 +4,22 @@ A place to collate notes and resources of our journey into porting nanopore sequ
 ## files
 A brief description of the included files in this repo. To understand more please look at the `setup-guide.txt` file.
 
+**Available:**
+
 * `setup-guide.txt`: a quick guide giving the basic steps to reproduce a running MinKnow environment on Jetson Xavier NX and AGX
 * `nanoporetech.list`: ONT MinIT repository file to be placed in `/etc/apt/sources.list.d/`
 * `ont-package-list-xavier.txt`: list of all ONT packages that need to be installed
 * `minknow.service`: this is a systemd config file that correctly loads the minknow service as the root user
 * `libs`: within this directory are precompiled versions of the `h5py` library. Most people will want to grab the python3.7 version, but the python2.7 version has been included as an option for 'legacy' versions of the MinKnow UI (now only possible if you have cached deb packages).
+
+**Incoming (these files will be added eventually):**
+
+* `user_conf`: a custom version of the user config file for MinKnow. This file contains the output path for data flow, this can be edited either in place (`/opt/ont/minknow/conf/`) or in this repo and then copied to the correct location.
+* `app_conf`: a custom version of the app config file for MinKnow. This file contains the lots of configuration flags. The ones we're interested in mainly involve guppy basecalling parameters and paths to the binaries. This file can be edited either in place (`/opt/ont/minknow/conf/`) or in this repo and then copied to the correct location.
+
+**Could be useful:**
+
+* ?
 
 ## [this is still very much under construction]
 
