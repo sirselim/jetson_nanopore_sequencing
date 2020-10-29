@@ -8,6 +8,7 @@ A brief description of the included files in this repo. To understand more pleas
 * `nanoporetech.list`: ONT MinIT repository file to be placed in `/etc/apt/sources.list.d/`
 * `ont-package-list-xavier.txt`: list of all ONT packages that need to be installed
 * `minknow.service`: this is a systemd config file that correctly loads the minknow service as the root user
+* `libs`: within this directory are precompiled versions of the `h5py` library. Most people will want to grab the python3.7 version, but the python2.7 version has been included as an option for 'legacy' versions of the MinKnow UI (now only possible if you have cached deb packages).
 
 ## [this is still very much under construction]
 
