@@ -1,7 +1,7 @@
 # Nvidia Jetson Nanopore Sequencing
 A place to collate notes and resources of our journey into porting nanopore sequencing over to accessible, portable technology - Nvidia Jetson embedded computing.
 
-<iframe src="https://giphy.com/embed/CuqhXDfxhKlquBBOQr" width="270" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/CuqhXDfxhKlquBBOQr">via GIPHY</a></p>
+![xavier-minknow](![hippo](https://giphy.com/gifs/CuqhXDfxhKlquBBOQr))
 
 **A sample of hardware images (for those so inclined)**
 
