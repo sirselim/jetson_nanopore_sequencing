@@ -34,7 +34,7 @@ In the mean time please feel free to look over various notes and presentations t
 
 I've been asked about part's lists, what are we using, where do we get if from? So the below is an attempt to address this. If others have confirmed working hardware please feel free to make a PR/issue or similar.
 
-**Note:** in the below I have highlighted which components are confirmed as working by our team.
+**Note:** in the below I have highlighted which components are confirmed as working by our team.  
 **Warning:** all prices are in New Zealand dollars.
 
 **Main components**
