@@ -22,7 +22,7 @@ There has been greatly contribution to by numerous community members from around
 
 Chances are that if you are here you are interested in setting up your own Jetson-based system. If so please read on. First this to note is that **this is still very much under construction** and will be continually developing. I'm aiming to create a more robust website to support the project, but for now this README will suffice.
 
-### Where it started ('original' background)
+### Where it started (paving the way)
 
 Please feel free to look over various notes and presentations that we've put together over the last 12-18 months that directly support the current 'product':
 
