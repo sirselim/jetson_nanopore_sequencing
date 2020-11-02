@@ -52,11 +52,11 @@ The components listed below act as a replacement for a desktop computer or lapto
 Below is a list of what we are currently using to have a fully portable sequencing unit. There is obviously a wide range of components that can be mixed and matched
 
 * touch screen
-  * [**confirmed**] generic (no name?) 7 inch LCD HDMI touchscreen
+  * [**confirmed**] generic (no name?) 7 inch LCD 1024x600 HDMI touchscreen ([link](https://www.jaycar.co.nz/1024x600-hdmi-7in-screen-with-usb-capacitive-touch/p/XC9026))
 * power pack / battery
-  * [**confirmed**] RavPower 27000mAh
+  * [**confirmed**] RavPower 27000mAh 85W Power House Model: RP-PB055 ([link](https://www.ravpower.com/products/rp-pb055-27000mah-portable-charger))
 * solar panel
-  * [**confirmed**]
+  * [**confirmed**] Choetech 80W Foldable & Portable Solar Panel Charger with DC and USB Type Ports ([link](https://www.mightygadgets.co.nz/collections/solar-charger-1/products/copy-of-solar-charger-24w-portable-solar-panel-charger-with-dual-usb-ports-by-choetech))
 
 ## notes
 
