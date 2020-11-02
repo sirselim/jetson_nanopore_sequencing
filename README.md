@@ -44,23 +44,23 @@ I've been asked about part's lists, what are we using, where do we get if from? 
 The components listed below act as a replacement for a desktop computer or laptop to run MinKnow and interface with the ONT MinION. The benefit of the Nvidia Jetson family of *'single board computers'* is in their price and performance. The key feature being the onboard GPU, which, on the Xavier models at least, is more than able to keep up with live base calling a MinION flow cell. They also act as nice little headless base call servers.
 
 * **Nvidia Jetson Xavier NX / Xavier AGX** (confirmed working by external collaborators on Jetson TX2 as well, but this board is starting to show it's age, Xavier NX isn't much more expensive for a large overall upgrade)Nvidia Jetson Xavier NX / Xavier AGX (confirmed working by external collaborators on Jetson TX2 as well, but this board is starting to show it's age, Xavier NX isn't much more expensive for a large overall upgrade)
-  * [***confirmed***] Jetson Xavier NX ([link](https://developer.nvidia.com/embedded/jetson-xavier-nx-devkit))
-  * [***confirmed***] Jetson Xavier AGX ([link](https://developer.nvidia.com/embedded/jetson-agx-xavier-developer-kit))
-  * Jetson TX2 ([link](https://developer.nvidia.com/embedded/jetson-tx2-developer-kit))
+  * Jetson Xavier NX ([link](https://developer.nvidia.com/embedded/jetson-xavier-nx-devkit)) [***confirmed***]
+  * Jetson Xavier AGX ([link](https://developer.nvidia.com/embedded/jetson-agx-xavier-developer-kit)) [***confirmed***]
+  * Jetson TX2 ([link](https://developer.nvidia.com/embedded/jetson-tx2-developer-kit)) [***externally confirmed***]
 * **NVMe solid state hard drive** (you can go cheaper here, but a high speed drive does provide a little performance boost)
-  * [***confirmed***] Samsung 970 EVO Plus 1TB M.2 (2280), NVMe SSD ([link](https://www.pbtech.co.nz/product/HDDSAM971601/Samsung-970-EVO-Plus-1TB-M2-2280NVMe-SSD-RWMax-350))
+  * Samsung 970 EVO Plus 1TB M.2 (2280), NVMe SSD ([link](https://www.pbtech.co.nz/product/HDDSAM971601/Samsung-970-EVO-Plus-1TB-M2-2280NVMe-SSD-RWMax-350)) [***confirmed***]
 * **micro SD card** (needed for the Xavier NX, OS drive)
-  * [***confirmed***] SanDisk 64GB Mobile Extreme Pro microSDXC ([link](https://www.pbtech.co.nz/product/MEMSDK3566/SanDisk-64GB-Mobile-Extreme-Pro-microSDXC-170MBS-r))
+  * SanDisk 64GB Mobile Extreme Pro microSDXC ([link](https://www.pbtech.co.nz/product/MEMSDK3566/SanDisk-64GB-Mobile-Extreme-Pro-microSDXC-170MBS-r)) [***confirmed***]
 
 #### **Portability components**  
 Below is a list of what we are currently using to have a fully portable sequencing unit. This is ideally what you're wanting to add if you plan to take a MinION out into the field (from a compute perspective, wet-lab reagents and equipment are also required). There is obviously a wide range of components that can be mixed and matched here, but the below are confirmed compatible and working in our hands - see the above picture gallery for our set up.
 
 * **touch screen**
-  * [***confirmed***] generic (no name?) 7 inch LCD 1024x600 HDMI touchscreen ([link](https://www.jaycar.co.nz/1024x600-hdmi-7in-screen-with-usb-capacitive-touch/p/XC9026))
+  * generic (no name?) 7 inch LCD 1024x600 HDMI touchscreen ([link](https://www.jaycar.co.nz/1024x600-hdmi-7in-screen-with-usb-capacitive-touch/p/XC9026)) [***confirmed***]
 * **power pack / battery**
-  * [***confirmed***] RavPower 27000mAh 85W Power House Model: RP-PB055 ([link](https://www.ravpower.com/products/rp-pb055-27000mah-portable-charger))
+  * RavPower 27000mAh 85W Power House Model: RP-PB055 ([link](https://www.ravpower.com/products/rp-pb055-27000mah-portable-charger)) [***confirmed***]
 * **solar panel**
-  * [***confirmed***] Choetech 80W Foldable & Portable Solar Panel Charger with DC and USB Type Ports ([link](https://www.mightygadgets.co.nz/collections/solar-charger-1/products/copy-of-solar-charger-24w-portable-solar-panel-charger-with-dual-usb-ports-by-choetech))
+  * Choetech 80W Foldable & Portable Solar Panel Charger with DC and USB Type Ports ([link](https://www.mightygadgets.co.nz/collections/solar-charger-1/products/copy-of-solar-charger-24w-portable-solar-panel-charger-with-dual-usb-ports-by-choetech)) [***confirmed***]
 
 ### File description
 A brief description of the included files in this repo. These are included to easy the initial installation and set up of the computing environment. To understand more please look at the `setup-guide.txt` file. This approach is currently confirmed working on both the Jetson Xavier NX and AGX systems, being replicated on multiple devices around the globe (New Zealand, Italy, Switzerland, USA).
