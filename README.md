@@ -14,7 +14,9 @@ It wasn't until a year or so later that things really started to align. One fact
 > *"NVIDIA® Jetson™ systems provide the performance and power efficiency to run autonomous machines software, faster and with less power. Each is a complete System-on-Module (SOM), with CPU, GPU, PMIC, DRAM, and flash storage—saving development time and money. Jetson is also extensible. Just select the SOM that’s right for the application, and build the custom system around it to meet its specific needs."*  
 > (source: [link](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/))
 
-Knowing that these affordable but powerful (think Raspberry Pi on steroids) compute units were available, had Nvidia GPUs, and actually made up the 'heart' of the ONT MinIT (Jetson TX2), it was time to start exploring. There were a lot of bumps along the way (mainly due to the lack of AMR builds of various pieces of software), but long story short where now at a point where MinKnow with live base calling works on the majority of the Jetson family. There has been greatly contribution to by numerous community members from around the globe, if you're interested in the in-depth development story told through gist comments check it out [here](https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94) - be ready for a long read! (no pun intended...)
+Knowing that these affordable but powerful (think Raspberry Pi on steroids) compute units were available, had Nvidia GPUs, and actually made up the 'heart' of the ONT MinIT (Jetson TX2), it was time to start exploring. There were a lot of bumps along the way (mainly due to the lack of AMR builds of various pieces of software), but long story short where now at a point where MinKnow with live base calling works on the majority of the Jetson family. 
+
+There has been greatly contribution to by numerous community members from around the globe, if you're interested in the in-depth development story told through gist comments check it out [here](https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94) - be ready for a long read! (no pun intended...)
 
 ## Getting started
 
