@@ -5,6 +5,15 @@ A place to collate notes and resources of our journey into porting nanopore sequ
 
 ## What's this about?
 
+**A little story**  
+This project came about as a thought that I had whilst sitting in hospital waiting for test results from my son's lumbar puncture in late 2017. It ended up taking 48 hrs to return a negative result
+
+**Introducing the Nvidia Jetson embedded compute family**  
+It wasn't until a year or so later that things really started to align. One factor was my increased involvement with nanopore data and realising the advantages of GPUs, the other was finding out about the Nvidia Jetson family. From Nvidia themselves:
+
+> *"NVIDIA® Jetson™ systems provide the performance and power efficiency to run autonomous machines software, faster and with less power. Each is a complete System-on-Module (SOM), with CPU, GPU, PMIC, DRAM, and flash storage—saving development time and money. Jetson is also extensible. Just select the SOM that’s right for the application, and build the custom system around it to meet its specific needs."*
+> source: [link](> source: [link](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/))
+
 ## files
 A brief description of the included files in this repo. To understand more please look at the `setup-guide.txt` file.
 
