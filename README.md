@@ -38,7 +38,7 @@ I've been asked about part's lists, what are we using, where do we get if from? 
 **Note:** in the below I have highlighted which components are confirmed as working by our team.  
 **Warning:** all prices are in New Zealand dollars unless otherwise stated. For us in New Zealand we need to import the Jetson boards, there are no local resellers.
 
-**Main components**
+**Main components**  
 The components listed below act as a replacement for a desktop computer or laptop to run MinKnow and interface with the ONT MinION. The benefit of the Nvidia Jetson family of *'single board computers'* is in their price and performance. The key feature being the onboard GPU, which, on the Xavier models at least, is more than able to keep up with live base calling a MinION flow cell. They also act as nice little headless base call servers.
 
 * Nvidia Jetson Xavier NX / Xavier AGX (confirmed working by external collaborators on Jetson TX2 as well, but this board is starting to show it's age, Xavier NX isn't much more expensive for a large overall upgrade)
@@ -50,7 +50,7 @@ The components listed below act as a replacement for a desktop computer or lapto
 * micro SD card (needed for the Xavier NX, OS drive)
   * [**confirmed**] SanDisk 64GB Mobile Extreme Pro microSDXC ([link](https://www.pbtech.co.nz/product/MEMSDK3566/SanDisk-64GB-Mobile-Extreme-Pro-microSDXC-170MBS-r))
 
-**Portability components**
+**Portability components**  
 Below is a list of what we are currently using to have a fully portable sequencing unit. There is obviously a wide range of components that can be mixed and matched
 
 * touch screen
