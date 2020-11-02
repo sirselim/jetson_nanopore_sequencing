@@ -29,7 +29,35 @@ In the mean time please feel free to look over various notes and presentations t
   - \[eResearch 2020 presentation]: https://sirselim.github.io/presentations/eResearch_2020/eResearch_presentation_livedemo_2020#1
   - \[initial Xavier notes/unboxing/setup]: https://hackmd.io/@Miles/HkumH7sBH
   - \[benchmarking guppy on various GPUs]: https://esr-nz.github.io/gpu_basecalling_testing/gpu_benchmarking.html
-  
+
+## Parts list
+
+I've been asked about part's lists, what are we using, where do we get if from? So the below is an attempt to address this. If others have confirmed working hardware please feel free to make a PR/issue or similar.
+
+**Note:** in the below I have highlighted which components are confirmed as working by our team.
+
+**Main components**
+The components listed below act as a replacement for a desktop computer or laptop to run MinKnow and interface with the ONT MinION. The benefit of the Nvidia Jetson family 'of single board computers' is in their price and performance. The key feature being the onboard GPU, which, on the Xavier models at least, is more than able to keep up with live base calling a MinION flow cell. They also act as nice little headless base call servers.
+
+* Nvidia Jetson Xavier NX / Xavier AGX (confirmed working on Jetson TX2 as well, but this board is starting to show it's age)
+  * [**confirmed**] Jetson Xavier NX
+  * [**confirmed**] Jetson Xavier AGX
+  * Jetson TX2
+* nvme solid state hard drive
+  * [**confirmed**]
+* micro SD card (needed for the Xavier NX)
+  * [**confirmed**]
+
+**Portability components**
+Below is a list of what we are currently using to have a fully portable sequencing unit. There is obviously a wide range of components that can be mixed and matched
+
+* touch screen
+  * [**confirmed**] generic (no name?) 7 inch LCD HDMI touchscreen
+* power pack / battery
+  * [**confirmed**] RavPower 27000mAh
+* solar panel
+  * [**confirmed**]
+
 ## notes
 
 * if you are looking for the `h5py` library compiled on the Xavier AGX using ONT's various software stack please download the zipped file found in this repository. You can find instructions for setting up [here](https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94#gistcomment-3481318).
