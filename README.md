@@ -1,7 +1,7 @@
 # Nvidia Jetson Nanopore Sequencing
 A place to collate notes and resources of our journey into porting nanopore sequencing over to accessible, portable technology - Nvidia Jetson embedded computing.
 
-![xavier-minknow](https://gph.is/g/amQyX0B)
+![xavier-minknow](https://github.com/sirselim/jetson_nanopore_sequencing/raw/main/images/xavier-ont.gif)
 
 **A sample of hardware images (for those so inclined)**
 
