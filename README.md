@@ -51,7 +51,7 @@ The components listed below act as a replacement for a desktop computer or lapto
   * [**confirmed**] SanDisk 64GB Mobile Extreme Pro microSDXC ([link](https://www.pbtech.co.nz/product/MEMSDK3566/SanDisk-64GB-Mobile-Extreme-Pro-microSDXC-170MBS-r))
 
 **Portability components**  
-Below is a list of what we are currently using to have a fully portable sequencing unit. There is obviously a wide range of components that can be mixed and matched
+Below is a list of what we are currently using to have a fully portable sequencing unit. This is ideally what you're wanting to add if you plan to take a MinION out into the field (from a compute perspective, wet-lab reagents and equipment are also required). There is obviously a wide range of components that can be mixed and matched here, but the below are confirmed compatible and working in our hands - see the above picture gallery for our set up.
 
 * touch screen
   * [**confirmed**] generic (no name?) 7 inch LCD 1024x600 HDMI touchscreen ([link](https://www.jaycar.co.nz/1024x600-hdmi-7in-screen-with-usb-capacitive-touch/p/XC9026))
