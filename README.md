@@ -30,7 +30,7 @@ In the mean time please feel free to look over various notes and presentations t
   - \[initial Xavier notes/unboxing/setup]: https://hackmd.io/@Miles/HkumH7sBH
   - \[benchmarking guppy on various GPUs]: https://esr-nz.github.io/gpu_basecalling_testing/gpu_benchmarking.html
 
-## Parts list
+## Parts list (Hardware)
 
 I've been asked about part's lists, what are we using, where do we get if from? So the below is an attempt to address this. If others have confirmed working hardware please feel free to make a PR/issue or similar.
 
