@@ -6,7 +6,7 @@ A place to collate notes and resources of our journey into porting nanopore sequ
 ## What's this about?
 
 **A little story**  
-This project came about as a thought that I had whilst sitting in hospital waiting for test results from my son's lumbar puncture in late 2017. It ended up taking 48 hrs to return a negative result
+This project came about as a thought that I had whilst sitting in hospital waiting for test results from my son's lumbar puncture in late 2017. It ended up taking 48 hrs to return a negative result. At this stage I knew nanopore sequencing was cheap and fast, back then doable in hours. So why couldn't we easily get this sort of technology into hospitals? Why stop there, surely we could continue in the disruptive vein that ONT are paving and really democritise next-generation sequencing, providing it to the masses, think cheap 'off-the-shelf' parts that start to make this accessible to communities and developing countries. So that's what got the ball rolling, and it's been incredible seeing and meeting all the like-minded poeple on this journey to where we are now.
 
 **Introducing the Nvidia Jetson embedded compute family**  
 It wasn't until a year or so later that things really started to align. One factor was my increased involvement with nanopore data and realising the advantages of GPUs, the other was finding out about the Nvidia Jetson family. From Nvidia themselves:
@@ -14,36 +14,22 @@ It wasn't until a year or so later that things really started to align. One fact
 > *"NVIDIA® Jetson™ systems provide the performance and power efficiency to run autonomous machines software, faster and with less power. Each is a complete System-on-Module (SOM), with CPU, GPU, PMIC, DRAM, and flash storage—saving development time and money. Jetson is also extensible. Just select the SOM that’s right for the application, and build the custom system around it to meet its specific needs."*  
 > (source: [link](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/))
 
-## files
-A brief description of the included files in this repo. To understand more please look at the `setup-guide.txt` file.
+Knowing that these affordable but powerful (think Raspberry Pi on steroids) compute units were available, had Nvidia GPUs, and actually made up the 'heart' of the ONT MinIT (Jetson TX2), it was time to start exploring. There were a lot of bumps along the way (mainly due to the lack of AMR builds of various pieces of software), but long story short where now at a point where MinKnow with live base calling works on the majority of the Jetson family. There has been greatly contribution to by numerous community members from around the globe, if you're interested in the in-depth development story told through gist comments check it out [here](https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94) - be ready for a long read! (no pun intended...)
 
-**Available:**
+## Getting started
 
-* `setup-guide.txt`: a quick guide giving the basic steps to reproduce a running MinKnow environment on Jetson Xavier NX and AGX
-* `nanoporetech.list`: ONT MinIT repository file to be placed in `/etc/apt/sources.list.d/`
-* `ont-package-list-xavier.txt`: list of all ONT packages that need to be installed
-* `minknow.service`: this is a systemd config file that correctly loads the minknow service as the root user
-* `libs`: within this directory are precompiled versions of the `h5py` library. Most people will want to grab the python3.7 version, but the python2.7 version has been included as an option for 'legacy' versions of the MinKnow UI (now only possible if you have cached deb packages).
+Chances are that if you are here you are interested in setting up your own Jetson-based system. If so please read on. First this to note is that **this is still very much under construction** and will be continually developing. I'm aiming to create a more robust website to support the project, but for now this README will suffice.
 
-**Incoming (these files will be added eventually):**
+### Where it started ('original' background)
 
-* `user_conf`: a custom version of the user config file for MinKnow. This file contains the output path for data flow, this can be edited either in place (`/opt/ont/minknow/conf/`) or in this repo and then copied to the correct location.
-* `app_conf`: a custom version of the app config file for MinKnow. This file contains the lots of configuration flags. The ones we're interested in mainly involve guppy basecalling parameters and paths to the binaries. This file can be edited either in place (`/opt/ont/minknow/conf/`) or in this repo and then copied to the correct location.
+Please feel free to look over various notes and presentations that we've put together over the last 12-18 months that directly support the current 'product':
 
-**Could be useful:**
+- \[**active community discussion**]: https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94
+- \[eResearch 2020 presentation]: https://sirselim.github.io/presentations/eResearch_2020/eResearch_presentation_livedemo_2020#1
+- \[initial Xavier notes/unboxing/setup]: https://hackmd.io/@Miles/HkumH7sBH
+- \[benchmarking guppy on various GPUs]: https://esr-nz.github.io/gpu_basecalling_testing/gpu_benchmarking.html
 
-* ?
-
-## [this is still very much under construction]
-
-In the mean time please feel free to look over various notes and presentations that we've put together:
-
-  - \[**active community discussion**]: https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94
-  - \[eResearch 2020 presentation]: https://sirselim.github.io/presentations/eResearch_2020/eResearch_presentation_livedemo_2020#1
-  - \[initial Xavier notes/unboxing/setup]: https://hackmd.io/@Miles/HkumH7sBH
-  - \[benchmarking guppy on various GPUs]: https://esr-nz.github.io/gpu_basecalling_testing/gpu_benchmarking.html
-
-## Parts list (Hardware)
+### Parts list (Hardware)
 
 I've been asked about part's lists, what are we using, where do we get if from? So the below is an attempt to address this. If others have confirmed working hardware please feel free to make a PR/issue or similar.
 
@@ -72,6 +58,26 @@ Below is a list of what we are currently using to have a fully portable sequenci
 * solar panel
   * [**confirmed**] Choetech 80W Foldable & Portable Solar Panel Charger with DC and USB Type Ports ([link](https://www.mightygadgets.co.nz/collections/solar-charger-1/products/copy-of-solar-charger-24w-portable-solar-panel-charger-with-dual-usb-ports-by-choetech))
 
-## notes
+### File description
+A brief description of the included files in this repo. To understand more please look at the `setup-guide.txt` file.
+
+**Available:**
+
+* `setup-guide.txt`: a quick guide giving the basic steps to reproduce a running MinKnow environment on Jetson Xavier NX and AGX
+* `nanoporetech.list`: ONT MinIT repository file to be placed in `/etc/apt/sources.list.d/`
+* `ont-package-list-xavier.txt`: list of all ONT packages that need to be installed
+* `minknow.service`: this is a systemd config file that correctly loads the minknow service as the root user
+* `libs`: within this directory are precompiled versions of the `h5py` library. Most people will want to grab the python3.7 version, but the python2.7 version has been included as an option for 'legacy' versions of the MinKnow UI (now only possible if you have cached deb packages).
+
+**Incoming (these files will be added eventually):**
+
+* `user_conf`: a custom version of the user config file for MinKnow. This file contains the output path for data flow, this can be edited either in place (`/opt/ont/minknow/conf/`) or in this repo and then copied to the correct location.
+* `app_conf`: a custom version of the app config file for MinKnow. This file contains the lots of configuration flags. The ones we're interested in mainly involve guppy basecalling parameters and paths to the binaries. This file can be edited either in place (`/opt/ont/minknow/conf/`) or in this repo and then copied to the correct location.
+
+**Could be useful:**
+
+* ?
+
+### notes
 
 * if you are looking for the `h5py` library compiled on the Xavier AGX using ONT's various software stack please download the zipped file found in this repository. You can find instructions for setting up [here](https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94#gistcomment-3481318).
