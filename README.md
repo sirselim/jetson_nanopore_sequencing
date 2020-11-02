@@ -78,7 +78,7 @@ A brief description of the included files in this repo. These are included to ea
 
 **Could be useful:**
 
-* ?
+* I'm looking into a script that might automate some of the above, i.e. take user input and perform the operations all at once to set up the likes of the conf files. Watch this space.
 
 ### notes and caveats
 
