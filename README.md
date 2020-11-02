@@ -87,3 +87,20 @@ A brief description of the included files in this repo. These are included to ea
 * if you are looking for the `h5py` library compiled on the Xavier AGX using ONT's various software stack please download the zipped file found in this repository. You can find instructions for setting up [here](https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94#gistcomment-3481318).
 
 * **WARNING:** the current set up revolves around us leveraging the ONT MinIT ARM-based repositories. This process will only provided updated software for as long as the MinIT is supported by ONT, and now that it is discontinued it might be on a clock. Hopefully the software stack for the MinION Mk1c could be made to work in a similar fashion (they appear to still contain a Jetson TX2 at their heart). It's also extremely likely that ONT will release a new product based on the Xavier line, which should hopefully mean that we can then leverage that development. In the mean time it is recommended to download a cache of the currently installed packages to be able to rebuild a working system in the event that something like the repository being taken down, or an update from ONT breaking our efforts. To do this you can use a command such as `cat ont-package-list-xavier.txt | xargs sudo apt-get download` within the cloned repository. This assumes that you have set up the ONT Ubuntu Xenial MinIT repository. We are not making these packages available as they belong to ONT and this would break license agreements.
+  * note: to cache the `deb` files without access to an arm64 device (Jetson board) you can do the following on a Linux computer (**WARNING:** only do this if you feel comfortable changing system architecture settings, otherwise wait until you have an arm64 device):
+```sh
+# add the ont minit repos
+sudo echo "deb http://mirror.oxfordnanoportal.com/apt xenial-stable-minit non-free" > /etc/apt/sources.list.d/nanoporetech.mini.list
+# add arm64 as an arch to your system
+sudo dpkg --add-architecture arm64
+# update to ensure you have the latest repos
+sudo apt update
+# from within git repo run this
+cat ont-package-list-xavier.txt | xargs sudo apt-get download
+# once packages have downloaded remove arm64 arch
+sudo dpkg --remove-architecture arm64
+# comment out/remove the ont minit repos
+sudo rm /etc/apt/sources.list.d/nanoporetech.minit.list
+# update and ensure everything is OK
+sudo apt update
+```
