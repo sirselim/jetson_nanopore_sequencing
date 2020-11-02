@@ -38,7 +38,7 @@ I've been asked about part's lists, what are we using, where do we get if from? 
 **Note:** in the below I have highlighted which components are confirmed as working by our team.  
 **Warning:** all prices are in New Zealand dollars unless otherwise stated. For us in New Zealand we need to import the Jetson boards, there are no local resellers.
 
-**Main components**  
+#### **Main components**  
 The components listed below act as a replacement for a desktop computer or laptop to run MinKnow and interface with the ONT MinION. The benefit of the Nvidia Jetson family of *'single board computers'* is in their price and performance. The key feature being the onboard GPU, which, on the Xavier models at least, is more than able to keep up with live base calling a MinION flow cell. They also act as nice little headless base call servers.
 
 * Nvidia Jetson Xavier NX / Xavier AGX (confirmed working by external collaborators on Jetson TX2 as well, but this board is starting to show it's age, Xavier NX isn't much more expensive for a large overall upgrade)
@@ -50,7 +50,7 @@ The components listed below act as a replacement for a desktop computer or lapto
 * micro SD card (needed for the Xavier NX, OS drive)
   * [**confirmed**] SanDisk 64GB Mobile Extreme Pro microSDXC ([link](https://www.pbtech.co.nz/product/MEMSDK3566/SanDisk-64GB-Mobile-Extreme-Pro-microSDXC-170MBS-r))
 
-**Portability components**  
+#### **Portability components**  
 Below is a list of what we are currently using to have a fully portable sequencing unit. This is ideally what you're wanting to add if you plan to take a MinION out into the field (from a compute perspective, wet-lab reagents and equipment are also required). There is obviously a wide range of components that can be mixed and matched here, but the below are confirmed compatible and working in our hands - see the above picture gallery for our set up.
 
 * touch screen
@@ -61,7 +61,7 @@ Below is a list of what we are currently using to have a fully portable sequenci
   * [**confirmed**] Choetech 80W Foldable & Portable Solar Panel Charger with DC and USB Type Ports ([link](https://www.mightygadgets.co.nz/collections/solar-charger-1/products/copy-of-solar-charger-24w-portable-solar-panel-charger-with-dual-usb-ports-by-choetech))
 
 ### File description
-A brief description of the included files in this repo. To understand more please look at the `setup-guide.txt` file.
+A brief description of the included files in this repo. These are included to easy the initial installation and set up of the computing environment. To understand more please look at the `setup-guide.txt` file. This approach is currently confirmed working on both the Jetson Xavier NX and AGX systems, being replicated on multiple devices around the globe (New Zealand, Italy, Switzerland, USA).
 
 **Available:**
 
@@ -80,6 +80,8 @@ A brief description of the included files in this repo. To understand more pleas
 
 * ?
 
-### notes
+### notes and caveats
 
 * if you are looking for the `h5py` library compiled on the Xavier AGX using ONT's various software stack please download the zipped file found in this repository. You can find instructions for setting up [here](https://gist.github.com/sirselim/2ebe2807112fae93809aa18f096dbb94#gistcomment-3481318).
+
+* **WARNING:** the current set up revolves around us leveraging the ONT MinIT ARM-based repositories, This process will only provided updated software for as long as the MinIT is supported by ONT, and now that it is discontinued it might be on a clock. Hopefully the software stack for the MinION Mk1c could be made to work in a similar fashion (they appear to still contain a Jetson TX2 at their heart). It's also extremely likely that ONT will release a new product based on the Xavier line, which should hopefully mean that we can then leverage that development. In the mean time it is recommended to download a cache of the currently installed packages to be able to rebuild a working system in the event that something like the repository being taken down, or an update from ONT breaking our efforts. To do this you can use a command such as `apt-get download package-x package-y package-z`. We are not making these packages available as they belong to ONT and this would break license agreements.
