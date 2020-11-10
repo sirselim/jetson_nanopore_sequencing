@@ -110,3 +110,19 @@ sudo rm /etc/apt/sources.list.d/nanoporetech.minit.list
 # update and ensure everything is OK
 sudo apt update
 ```
+
+## optimising Guppy Base Calling on Jetson Xavier NX
+
+General formula:
+
+`runners * chunks_per_runner * chunk_size < 100'000 * [max GPU memory in GB] * 2`
+
+So the current settings I am running are:
+
+* --runners = 4
+* --chunks_per_runner = 256
+* --chunk_size = 1000
+
+`4 * 256 * 1000 ~= 100'000 * 8 * 2` which is `1'024'000 < 1'600'000`
+
+this is leaving some overhead for the likes of the OS and Minknow.
