@@ -125,4 +125,6 @@ So the current settings I am running are:
 
 `4 * 256 * 1000 ~= 100'000 * 8 * 2` which is `1'024'000 < 1'600'000`
 
-this is leaving some overhead for the likes of the OS and Minknow.
+this is leaving some overhead for the likes of the OS and MinKnow.
+
+Running with the defaults settings (as above) took **~5.3 mins** on a test data set. Running with the selected settings reduced this down to **~2.7 mins**.
