@@ -127,4 +127,6 @@ So the current settings I am running are:
 
 this is leaving some overhead for the likes of the OS and MinKnow.
 
-Running with the defaults settings (as above) took **~5.3 mins** on a test data set. Running with the selected settings reduced this down to **~2.7 mins**.
+Running with the default settings (as above) took **~5.3 mins** on a test data set. Running with the selected settings reduced this down to **~2.7 mins**.
+
+Increasing the `chunks_per_runner` led to the largest gains in speed.
