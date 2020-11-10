@@ -119,9 +119,9 @@ General formula:
 
 So the current settings I am running are:
 
-* --runners = 4
-* --chunks_per_runner = 256
-* --chunk_size = 1000
+* --runners = 4 (*1 default MinIT config*)
+* --chunks_per_runner = 256 (_48 default MinIT config_)
+* --chunk_size = 1000 (_1000 default MinIT config_)
 
 `4 * 256 * 1000 ~= 100'000 * 8 * 2` which is `1'024'000 < 1'600'000`
 
