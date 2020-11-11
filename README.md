@@ -142,7 +142,7 @@ So the current 'optimal' settings I am running are on the Xavier NX are:
 * --chunks_per_runner = **1024** (_48 default MinIT config_)
 * --chunk_size = **1000** (_1000 default MinIT config_)
 
-`4 * 1024 * 1000 ~= 100'000 * 16 * 2` which is `4'096'000 > 3'200'000`
+`3 * 1024 * 1000 ~= 100'000 * 16 * 2` which is `3'072'000 < 3'200'000`
 
 This is giving me a base calling rate of **~9.43x10<sup>6</sup> samples/s**.
 
