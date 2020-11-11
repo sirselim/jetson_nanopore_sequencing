@@ -119,7 +119,7 @@ General formula:
 
 ### Xavier NX
 
-So the current settings I am running are on the Xavier NX are:
+So the current settings I am running on the Xavier NX are:
 
 * --gpu_runners_per_device = **4** (*1 default MinIT config*)
 * --chunks_per_runner = **256** (_48 default MinIT config_)
@@ -135,7 +135,7 @@ Increasing the `chunks_per_runner` led to the largest gains in speed.
 
 ### Xavier AGX
 
-So the current 'optimal' settings I am running are on the Xavier NX are:
+The current 'optimal' settings I am running on the Xavier AGX are:
 
 * --num_callers (num basecallers) = **2**
 * --gpu_runners_per_device = **3** (*1 default MinIT config*)
