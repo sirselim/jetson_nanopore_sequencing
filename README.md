@@ -117,9 +117,11 @@ General formula:
 
 `runners * chunks_per_runner * chunk_size < 100'000 * [max GPU memory in GB] * 2`
 
-So the current settings I am running are:
+### Xavier NX
 
-* --runners = **4** (*1 default MinIT config*)
+So the current settings I am running are on the Xavier NX are:
+
+* --gpu_runners_per_device = **4** (*1 default MinIT config*)
 * --chunks_per_runner = **256** (_48 default MinIT config_)
 * --chunk_size = **1000** (_1000 default MinIT config_)
 
@@ -130,3 +132,35 @@ this is leaving some overhead for the likes of the OS and MinKnow.
 Running with the default settings (as above) took **~5.3 mins** on a test data set. Running with the selected settings reduced this down to **~2.7 mins**.
 
 Increasing the `chunks_per_runner` led to the largest gains in speed.
+
+### Xavier AGX
+
+So the current 'optimal' settings I am running are on the Xavier NX are:
+
+* --gpu_runners_per_device = **4** (*1 default MinIT config*)
+* --chunks_per_runner = **1024** (_48 default MinIT config_)
+* --chunk_size = **1000** (_1000 default MinIT config_)
+
+`4 * 1024 * 1000 ~= 100'000 * 16 * 2` which is `4'096'000 > 3'200'000`
+
+This is giving me a base calling rate of **~9.42x10<sup>6</sup> samples/s**.
+
+## testing Readfish
+
+Readfish is a software tool for selective sequencing (based on the read until API), more details [here](https://github.com/LooseLab/readfish/tree/dev).
+
+```sh
+# ensure you have a version of python3.7 with require dev libs
+sudo apt install python3.7 python3.7-dev python3.7-venv
+# Make a virtual environment
+python3.7 -m venv readfish
+. envs/readfish/bin/activate
+pip install --upgrade pip
+# install required packages/wheels/libs
+pip install wheel
+pip install Downloads/xavier_minit_build/ont_pyguppy_client_lib-4.0.15-cp37-cp37m-linux_aarch64.whl
+pip install git+https://github.com/nanoporetech/read_until_api@v3.0.0
+pip install git+https://github.com/LooseLab/readfish@dev
+# check readfish is installed
+readfish --version
+```
