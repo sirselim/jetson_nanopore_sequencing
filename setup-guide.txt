@@ -30,6 +30,9 @@ sudo mount /dev/nvme0n1p1 /xavier_ssd/
 
 # 4. add nanopore repo to system and update
 sudo cp nanoporetech.list /etc/apt/sources.list.d/
+# add key
+wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
+# update repos
 sudo apt update
 
 
