@@ -39,6 +39,26 @@ Please feel free to look over various notes and presentations that we've put tog
 - \[initial Xavier notes/unboxing/setup]: https://hackmd.io/@Miles/HkumH7sBH
 - \[benchmarking guppy on various GPUs]: https://esr-nz.github.io/gpu_basecalling_testing/gpu_benchmarking.html
 
+### Jetson Xavier AGX/NX specs
+
+Here is a very quick overview of the 'compute' specs for each Xavier developer kit. Links to Nvidia provide much more detail.
+
+#### Xavier AGX Dev Kit ([Nvidia link](https://developer.nvidia.com/embedded/jetson-agx-xavier-developer-kit))
+
+**GPU** 	512-core Volta GPU with Tensor Cores
+**CPU** 	8-core ARM v8.2 64-bit CPU, 8MB L2 + 4MB L3
+**Memory** 	32GB 256-Bit LPDDR4x | 137GB/s
+**Storage** 	32GB eMMC 5.1 [also has m.2 NVMe slot of expanded SSD option]
+**Size** 	105 mm x 105 mm x 65 mm
+
+#### Xavier NX Dev Kit ([Nvidia link](https://developer.nvidia.com/embedded/jetson-xavier-nx-devkit))
+
+**GPU** 	NVIDIA Volta architecture with 384 NVIDIA CUDA® cores and 48 Tensor cores
+**CPU** 	6-core NVIDIA Carmel ARM®v8.2 64-bit CPU 6 MB L2 + 4 MB L3
+**Memory** 	8 GB 128-bit LPDDR4x @ 51.2GB/s
+**Storage** 	microSD (not included) [also has m.2 NVMe slot of expanded SSD option]
+**Size** 	103 mm x 90.5 mm x 34.66 mm 
+
 ### Parts list (Hardware)
 
 I've been asked about part's lists, what are we using, where do we get if from? So the below is an attempt to address this. If others have confirmed working hardware please feel free to make a PR/issue or similar.
