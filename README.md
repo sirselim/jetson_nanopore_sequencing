@@ -185,3 +185,9 @@ pip install git+https://github.com/LooseLab/readfish@dev
 # check readfish is installed
 readfish --version
 ```
+Building minimap2 for arm:
+```sh
+git clone https://github.com/lh3/minimap2.git
+cd minimap2
+make arm_neon=1 aarch64=1
+```
