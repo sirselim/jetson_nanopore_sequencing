@@ -45,7 +45,7 @@ Here is a very quick overview of the 'compute' specs for each Xavier developer k
 
 #### Xavier AGX Dev Kit ([Nvidia link](https://developer.nvidia.com/embedded/jetson-agx-xavier-developer-kit))
 
-* **GPU** 	512-core Volta GPU with Tensor Cores  
+* **GPU** 	NVIDIA Volta architecture with 512 NVIDIA CUDA® cores and 64 Tensor cores  
 * **CPU** 	8-core ARM v8.2 64-bit CPU, 8MB L2 + 4MB L3  
 * **Memory** 	16GB/32GB 256-Bit LPDDR4x | 137GB/s  
 * **Storage** 	32GB eMMC 5.1 [also has m.2 NVMe slot of expanded SSD option]  
