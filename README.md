@@ -192,3 +192,12 @@ git clone https://github.com/lh3/minimap2.git
 cd minimap2
 make arm_neon=1 aarch64=1
 ```
+
+## MinKnow / Guppy compatibility
+
+It's a rather unspoken topic, but the issues that arise between ONT software versions are rather 'fun' to deal with. The below table is a start at documenting the known versions of MinKnow, Kingfisher UI and Guppy that play nicely together on the Jetson Xavier.
+
+|  MinKnow Core version | Kingfisher UI version | Guppy version working  |
+|:---------------------:|-----------------------|------------------------|
+| 4.0.5                 | 4.0.21                | 4.0.11, 4.0.14, 4.0.15 |
+| 4.1.2                 | 4.1.22                | 4.2.2, 4.2.3           |
