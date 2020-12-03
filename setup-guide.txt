@@ -10,9 +10,12 @@ cd ~/
 git clone https://github.com/sirselim/jetson_nanopore_sequencing.git
 cd ./jetson_nanopore_sequencing
 # download guppy from ONT servers
-wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_4.0.15_linuxaarch64_cuda10.tar.gz
+# this guppy version is suitable if you are running Minknow version 4.0.5
+# wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_4.0.15_linuxaarch64_cuda10.tar.gz
+# this is the latest version of guppy for the current Minknow in release (4.1.2)
+wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_4.2.3_linuxaarch64_cuda10.tar.gz
 # extract required packages
-tar -xzvf ont-guppy_4.0.15_linuxaarch64_cuda10.tar.gz
+tar -xzvf *_linuxaarch64_cuda10.tar.gz
 unzip h5py.zip 
 
 
@@ -22,6 +25,7 @@ sudo apt update
 sudo apt upgrade
 
 
+#TODO - this is making assumptions about previously created partitions
 # 3. mount ssd (this should be properly done, place holder for now)
 sudo mkdir /xavier_ssd
 sudo mkdir /xavier_ssd/minknow
@@ -37,6 +41,8 @@ sudo apt update
 
 
 # 5. install ont packages
+# this step is pulling from the latest ONT repo with minit packages
+# if you are building from cached debs replace this step with 'dpkg -i *.deb'
 # 6 packages required:
 # - ont-bream4-minit 
 # - ont-kingfisher-ui-minit 
@@ -54,12 +60,17 @@ sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller /usr/bin/guppy_basecaller
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_server /usr/bin/guppy_basecall_server
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_barcoder /usr/bin/guppy_barcoder
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_aligner /usr/bin/guppy_aligner
+# this last one is present in newest Minknow/Guppy release (Guppy 4.2.X)
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_client /usr/bin/guppy_basecall_client
+# can check versions linked are correct
 guppy_basecaller --version
 guppy_basecall_server --version
 guppy_aligner --version
 guppy_barcoder --version
+guppy_basecall_client --version
 
 
+#TODO - tidy this step to make it more user friendly
 # 7. edit the minknow conf files to change the location of data and check guppy paths and parameters
 cd /opt/ont/minknow/conf
 sudo nano user_conf 
@@ -80,3 +91,11 @@ service minknow restart
 # check
 service minknow status
 # can check that the services are running as root with htop
+
+
+## optional steps
+
+# install jetson-stats to allow nice hardware monitoring
+# https://github.com/rbonghi/jetson_stats
+sudo -H pip install -U jetson-stats
+# needs a reboot/logout and then can use jtop
