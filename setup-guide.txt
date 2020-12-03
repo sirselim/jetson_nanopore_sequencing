@@ -1,3 +1,10 @@
+# Notes: before running this script there are several steps that require
+# user action, namely: setting up the correct user/password, creating 
+# a partition for the NVMe drive (if present), and editing the configuration
+# files to include the correct directory structure. We will over time look
+# to automate much of this, but just be warned for now that there are steps
+# where you will need to get your hands dirty. ;)
+
 # 0. pre-setup
 # fresh inistall of Nvidia Jetson JetPack
 # create user: minit with pw: minit
