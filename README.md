@@ -1,4 +1,8 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4287657.svg)](https://doi.org/10.5281/zenodo.4287657)
+
+|:exclamation: please be fore warned that by following this set up guide neither the authors or Oxford Nanopore Technology (ONT) are liable for any hardware/consumable damage or data loss.|
+|-------------------|
+
 # Nvidia Jetson Nanopore Sequencing
 A place to collate notes and resources of our journey into porting nanopore sequencing over to accessible, portable technology - Nvidia Jetson embedded computing.
 
