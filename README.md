@@ -19,6 +19,8 @@ A place to collate notes and resources of our journey into porting nanopore sequ
 
 <img src="https://user-images.githubusercontent.com/5932864/97856233-e6223700-1d60-11eb-9e6b-efc2b4b454ff.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/5932864/97855835-3baa1400-1d60-11eb-8c4b-d2c0e678537c.jpg" width="30%"></img> <img src="https://user-images.githubusercontent.com/5932864/97855887-52e90180-1d60-11eb-8bd2-c15c5683b219.jpg" width="30%"></img> <img src="https://user-images.githubusercontent.com/5932864/97856655-7496b880-1d61-11eb-85a5-e97d95c139e3.jpg" width="30%"></img> <img src="https://user-images.githubusercontent.com/5932864/97856727-909a5a00-1d61-11eb-9065-e739def23e16.png" width="30%"></img> <img src="https://user-images.githubusercontent.com/5932864/97855803-2fbe5200-1d60-11eb-8cd7-8bb1d6734e25.jpg" width="30%"></img> 
 
+<img src="https://user-images.githubusercontent.com/5932864/102315158-8d3cf400-3fd8-11eb-8425-fa4e1511eed9.png" width="50%">
+
 ## What's this about?
 
 **A little story**  
