@@ -206,7 +206,8 @@ make arm_neon=1 aarch64=1
 
 It's a rather unspoken topic, but the issues that arise between ONT software versions are rather 'fun' to deal with. The below table is a start at documenting the known versions of MinKnow, Kingfisher UI and Guppy that play nicely together on the Jetson Xavier.
 
-|  MinKnow Core version | Kingfisher UI version | Guppy version working  |
-|:---------------------:|-----------------------|------------------------|
-| 4.0.5                 | 4.0.21                | 4.0.11, 4.0.14, 4.0.15 |
-| 4.1.2                 | 4.1.22                | 4.2.2, 4.2.3           |
+| MinION Release |  MinKnow Core version | Kingfisher UI version | Guppy version working  |
+|:---------------------:|:---------------------:|-----------------------|------------------------|
+| 20.06.5               | 4.0.5                 | 4.0.21                | 4.0.9                  |
+| 20.06.17              | 4.0.5                 | 4.0.21                | 4.0.11, 4.0.14, 4.0.15 |
+| 20.10.3               | 4.1.2                 | 4.1.22                | 4.2.2, 4.2.3           |
