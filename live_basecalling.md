@@ -337,7 +337,7 @@ Hopefully though this should get up up and running.
 The below is extra topics I'd like to delve into but that aren't directly related to live basecalling as such.
 ## Additional Guppy versions
 
-... work in progress ...
+**... work in progress ...**
 
 The point of this section is that you can have multiple versions of Guppy downloaded and extracted and use these without breaking your live basecalling setup. This is useful if you want to recall data generated on the current setup with say the latest version of Guppy after the fact, i.e. you might want to use Guppy 4.5.2 on that data you generated and basecalled originally using 4.3.4,
 
@@ -345,4 +345,6 @@ I'll try and update this asap. Please check back soon.
 
 ## Changing GPU optimisation parameters
 
-... work in progress ...
+**... work in progress ...**
+
+I have done a lot in this space and there is a lot of excellent knowledge online, so I want to try and capture some of that here. Check back soon!
