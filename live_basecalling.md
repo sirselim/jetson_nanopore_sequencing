@@ -222,6 +222,8 @@ We want these paths set to the location of our sym linked binaries, so the `/usr
                 "value0": "/var/log/minknow/guppy"
             },
 ```
+
+Don't be concerned that your `config_file` and various other variables are different, these are custom modifications I've made for the GPU on this machine (Nvidia Titan RTX). For now we just want to ensure we can get GPU basecalling running in MinKNOW live. Later on we can concentrate on optimising for speed and accuracy.
 ### Stop the MinKNOW service
 
 ```sh
