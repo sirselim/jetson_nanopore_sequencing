@@ -66,7 +66,7 @@ minion-nc:
 ```
 
 If you are having issues with getting MinION software / MinKNOW setup I suggest you go to the community forum and search for similar questions/issues, and if nothing turns up you can create your own.
-### Gettng the correct version of Guppy
+### Getting the correct version of Guppy
 
 This is something that seems to cause constant confusion, and I can see why! The versions of MinKNOW and Guppy are tightly tied together, **BUT** it doesn't mean that the latest version of each piece of software works with each other... with me so far?
 
