@@ -243,3 +243,10 @@ nvidia-smi
 
 ### Monitor your first sequencing run using the GUI to make sure basecalling is working as expected.
 
+## Additional Guppy versions
+
+... work in progress ...
+
+## Changing GPU optimisation parameters
+
+... work in progress ...
