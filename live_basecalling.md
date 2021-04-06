@@ -68,7 +68,7 @@ minion-nc:
 If you are having issues with getting MinION software / MinKNOW setup I suggest you go to the community forum and search for similar questions/issues, and if nothing turns up you can create your own.
 ### Getting the correct version of Guppy
 
-This is something that seems to cause constant confusion, and I can see why! The versions of MinKNOW and Guppy are tightly tied together, **BUT** it doesn't mean that the latest version of each piece of software works with each other... with me so far?
+This is something that seems to cause constant confusion, and I can see why! The versions of MinKNOW and Guppy are tightly tied together, **BUT** it doesn't mean that the latest version of each piece of software works with each other... are you with me so far?
 
 What this means in practice is that currently the latest Linux version of MinKNOW for MinION is 21.02.1, which requires Guppy version 4.3.4. However, the latest and greatest version of Guppy is currently 4.5.2. Now many people will be tracking that latest Guppy version as it's nice to have all the new bells and whistles, but it **will not** play nicely with MinKNOW and will crash out as soon as you try to run a sequencing experiment with live basecalling. There are ways to have multiple versions present on a system without causing issues, but more on that later.
 
