@@ -185,7 +185,18 @@ You will then need to navigate close to the bottom of the file, you're looking f
             ...
 ```
 
-In this section you will notice various path variables being set, this is what we want to ensure is correct. We want these paths set to the locatation of our sym linked binaries, so the `/usr/bin/...` versions. Here is that relevant section of one of my systems `app_conf` files as an example of what you are looking at as a final result:
+The above is actually very important in terms of the parameters that indicate that we are infact using GPU versions of Guppy binaries. So ensure yours looks like this.
+
+In this section you will also notice various path variables being set, this is what we want to ensure is correct. In particular these paths:
+
+```sh
+            "client_executable": "/usr/bin/guppy_basecall_client",
+            "barcoding_executable": "/usr/bin/guppy_barcoder",
+            "alignment_executable": "/usr/bin/guppy_aligner",
+            "server_executable": "/usr/bin/guppy_basecall_server",
+```
+
+We want these paths set to the location of our sym linked binaries, so the `/usr/bin/...` versions. Here is that relevant section of one of my systems `app_conf` files as an example of what you are looking at as a final result:
 
 ```sh
         "guppy": {
