@@ -226,11 +226,15 @@ We want these paths set to the location of our sym linked binaries, so the `/usr
 Don't be concerned that your `config_file` and various other variables are different, these are custom modifications I've made for the GPU on this machine (Nvidia Titan RTX). For now we just want to ensure we can get GPU basecalling running in MinKNOW live. Later on we can concentrate on optimising for speed and accuracy.
 ### Stop the MinKNOW service
 
+Once you have made the above edits and saved the file you will need to restart the `minknow` service that's running in the background. You do that with the below:
+
 ```sh
 sudo service minknow stop
 ```
 
 ### Confirm the guppy_basecall_server process isn't running
+
+Run the below:
 
 ```sh
 ps -A | grep guppy_basecall_
@@ -242,20 +246,95 @@ If the result of the above command is not blank, manually kill the process:
 sudo killall guppy_basecall_server
 ```
 
-### Start the MinKNOW service:
+### Start the MinKNOW service
+
+If you are happy you can then start the `minknow` service again:
 
 ```sh
 sudo service minknow start
 ```
 
-### Confirm that guppy_basecall_server is using the GPU:
+You can then check it's status:
+
+```sh
+service minknow status
+```
+
+It should look something like this:
+
+```sh
+● minknow.service - MinKNOW Instrument Software for MinIT (daemon)
+     Loaded: loaded (/etc/systemd/system/minknow.service; enabled; vendor preset: enabled)
+     Active: active (running) since Tue 2021-03-23 14:28:04 NZDT; 2 weeks 0 days ago
+   Main PID: 6283 (mk_manager_svc)
+      Tasks: 311 (limit: 309008)
+     Memory: 2.9G
+        CPU: 4d 23h 36min 3.076s
+     CGroup: /system.slice/minknow.service
+             ├─ 6283 /opt/ont/minknow/bin/mk_manager_svc
+             ├─ 6287 /opt/ont/minknow/bin/crashpad_handler --database=/share/minknow/data/core-dump-db --metrics-dir=/share/minknow/data/core-dump-db --url=https://submit.backtrace.io/nanoporetech/6e3c4958cfd996b7000dadb02a931ff700986aa48b33903b5902dff716c95809/minidump --annotation=cmd_line=/opt/ont/minknow/bin/mk_m>
+             ├─ 6307 /usr/bin/guppy_basecall_server --config dna_r9.4.1_450bps_fast_prom.cfg --port 5555 --log_path /var/log/minknow/guppy --ipc_threads 4 --max_queued_reads 5000 --chunks_per_runner 256 --num_callers 4 -x cuda:all --gpu_runners_per_device 48
+             ├─ 6308 /opt/ont/minknow/bin/grpcwebproxy --server_tls_cert_file=/opt/ont/minknow/conf/rpc-certs/localhost.crt --server_tls_key_file=/opt/ont/minknow/conf/rpc-certs/localhost.key --backend_addr=127.0.0.1:9501 --backend_tls_noverify --backend_tls=false --server_bind_address=0.0.0.0 --server_http_tls_port=>
+             ├─ 6309 /opt/ont/minknow/bin/basecall_manager --guppy-address 5555 --conf /opt/ont/minknow/conf 0.0.0.0:9504
+             ├─ 6321 /opt/ont/minknow/bin/crashpad_handler --database=/share/minknow/data/core-dump-db --metrics-dir=/share/minknow/data/core-dump-db --url=https://submit.backtrace.io/nanoporetech/6e3c4958cfd996b7000dadb02a931ff700986aa48b33903b5902dff716c95809/minidump --annotation=cmd_line=/opt/ont/minknow/bin/base>
+             ├─ 6338 /opt/ont/minknow/bin/grpcwebproxy --server_tls_cert_file=/opt/ont/minknow/conf/rpc-certs/localhost.crt --server_tls_key_file=/opt/ont/minknow/conf/rpc-certs/localhost.key --backend_addr=127.0.0.1:9504 --backend_tls_noverify --backend_tls=false --server_bind_address=0.0.0.0 --server_http_tls_port=>
+             ├─12793 /opt/ont/minknow/bin/control_server --config /tmp/minknow_7e3a11a1-8dda-43d4-9d7c-1c50131a4fce/conf-MN34702
+             ├─12796 /opt/ont/minknow/bin/crashpad_handler --database=/share/minknow/data/core-dump-db --metrics-dir=/share/minknow/data/core-dump-db --url=https://submit.backtrace.io/nanoporetech/6e3c4958cfd996b7000dadb02a931ff700986aa48b33903b5902dff716c95809/minidump --annotation=cmd_line=/opt/ont/minknow/bin/cont>
+             ├─12880 /opt/ont/minknow/bin/analyser --config /tmp/minknow_7e3a11a1-8dda-43d4-9d7c-1c50131a4fce/conf-MN34702 --shmem-prefix mk12793
+             ├─12881 /opt/ont/minknow/bin/grpcwebproxy --server_tls_cert_file=/opt/ont/minknow/conf/rpc-certs/localhost.crt --server_tls_key_file=/opt/ont/minknow/conf/rpc-certs/localhost.key --backend_addr=127.0.0.1:8001 --backend_tls_noverify --backend_tls=true --server_bind_address=0.0.0.0 --server_http_tls_port=8>
+             └─12889 /opt/ont/minknow/bin/crashpad_handler --database=/share/minknow/data/core-dump-db --metrics-dir=/share/minknow/data/core-dump-db --url=https://submit.backtrace.io/nanoporetech/6e3c4958cfd996b7000dadb02a931ff700986aa48b33903b5902dff716c95809/minidump --annotation=cmd_line=/opt/ont/minknow/bin/anal>
+```
+
+### Confirm that guppy_basecall_server is using the GPU
+
+Another check is looking at the output of `nvidia-smi`
 
 ```sh
 nvidia-smi
 ```
 
-### Monitor your first sequencing run using the GUI to make sure basecalling is working as expected.
+Mine looks like this:
 
+```sh
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 460.67       Driver Version: 460.67       CUDA Version: 11.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  TITAN RTX           On   | 00000000:18:00.0 Off |                  N/A |
+| 41%   31C    P8     4W / 280W |   6090MiB / 24215MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|    0   N/A  N/A      1917      G   /usr/lib/xorg/Xorg                277MiB |
+|    0   N/A  N/A      6307      C   ...bin/guppy_basecall_server     5725MiB |
+|    0   N/A  N/A     15354      G   cinnamon                           27MiB |
+|    0   N/A  N/A   1737263      G   /usr/lib/firefox/firefox            3MiB |
+|    0   N/A  N/A   1737290      G   /usr/lib/firefox/firefox            3MiB |
+|    0   N/A  N/A   1737322      G   /usr/lib/firefox/firefox            3MiB |
+|    0   N/A  N/A   1737373      G   /usr/lib/firefox/firefox            3MiB |
+|    0   N/A  N/A   1741095      G   ...gAAAAAAAAA --shared-files       13MiB |
+|    0   N/A  N/A   3884069      G   ...AAAAAAAA== --shared-files       23MiB |
++-----------------------------------------------------------------------------+
+```
+
+You can see that GPU `guppy_basecall_server` is running. Hooray!
+### Monitor your next run closely
+
+Now hopefully you should be able to put in a flowcell and check that live GPU basecalling is working. It might be a good idea to use an old flowcell with a library already on it if you have something like that. Or you can put the device into playback/simulation mode, but that's not a 'simple' process - I'll leave it up to those people that want to dig a little deeper to explore this option.
+
+For the first sequencing run you should be able to monitor using the MinKNOW GUI to make sure basecalling is working as expected. If it errors out make sure to check all the logs and error messages and see if you can pinpoint where things are going wrong.
+
+Hopefully though this should get up up and running.
+
+The below is extra topics I'd like to delve into but that aren't directly related to live basecalling as such.
 ## Additional Guppy versions
 
 ... work in progress ...
