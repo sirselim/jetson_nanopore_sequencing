@@ -122,7 +122,7 @@ sudo cp -r ont-guppy /opt/ont/
 
 ### Create sym links to `/usr/bin`
 
-Now we have copied `ont-guppy` and all it's contents this is where what I do differs from the suggested instructions. I create symlinks of the newly copied binaries to `/usr/bin/` essentially making this version of Guppy (and in this case ONTs version of minimap2) the system-wide versions of these tools. Now this might not be for everyone, but I'm comfortable with what I am doing and this works well for me. As I stated above I will explain how I deal with other versions of Guppy later on.
+Now we have copied `ont-guppy` and all it's contents this is where what I do differs from the suggested instructions. I create sym links of the newly copied binaries to `/usr/bin/` essentially making this version of Guppy (and in this case ONTs version of minimap2) the system-wide versions of these tools. Now this might not be for everyone, but I'm comfortable with what I am doing and this works well for me. As I stated above I will explain how I deal with other versions of Guppy later on.
 
 **An important note:** this step has been modified after the release of Guppy 4.2.2, which introduces `guppy_basecall_client` in place of the `guppy_basecaller`. This has a HUGE influence when we get to modifying the `app_conf` file soon.
 
@@ -159,29 +159,9 @@ $ guppy_basecall_client --version
 
 Notice that this is the correct version for MinION MinKNOW 21.02.1. Great!
 
+### 
 
-
-1. Identify the version of the Guppy basecall server that MinKNOW is using:
-
-     /usr/bin/guppy_basecall_server --version
-
-2. Download the archive version of GPU-enabled Guppy from the Nanopore Community.
-
-     The specific URL to use is:
-
-     https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_<version>_linux64.tar.gz
-
-     Where <version> is the numeric part (major.minor.patch) obtained from step 1. For example:
-
-     https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_3.2.10_linux64.tar.gz
-
-3. Extract the archive to a folder, e.g.:
-
-     tar -C /home/myuser/ont-guppy -xf ont-guppy_XXX_linux64.tar.gz
-
- 4. Make sure the archive version of Guppy runs on your machine (see the installation section of the Guppy protocol – you may need to install GPU drivers, for example).
-
- 5. Modify MinKNOW's application config to enable GPU basecalling and set appropriate settings (where "myuser"is the appropriate location for your installation):
+1. Modify MinKNOW's application config to enable GPU basecalling and set appropriate settings (where "myuser"is the appropriate location for your installation):
 
      sudo /opt/ont/minknow/bin/config_editor --conf application --filename /opt/ont/minknow/conf/app_conf \
 
@@ -195,26 +175,36 @@ Notice that this is the correct version for MinION MinKNOW 21.02.1. Great!
 
     --set guppy.ipc_threads=2
 
-Information about Guppy settings can be found in the appropriate section of the Guppy documentation on the community.
 
-6. Stop the MinKNOW service:
+### Stop the MinKNOW service
 
-      sudo service minknow stop
+```sh
+sudo service minknow stop
+```
 
-7. Confirm the guppy_basecall_server process isn't running:
+### Confirm the guppy_basecall_server process isn't running
 
-      $ ps -A | grep guppy_basecall_
+```sh
+ps -A | grep guppy_basecall_
+```
 
-    If the result of the above command is not blank, manually kill the process:
+If the result of the above command is not blank, manually kill the process:
 
-       sudo killall guppy_basecall_server
+```sh
+sudo killall guppy_basecall_server
+```
 
-8. Start the MinKNOW service:
+### Start the MinKNOW service:
 
-      sudo service minknow start
+```sh
+sudo service minknow start
+```
 
-9. Confirm that guppy_basecall_server is using the GPU:
+### Confirm that guppy_basecall_server is using the GPU:
 
-      nvidia-smi
+```sh
+nvidia-smi
+```
 
-10. Monitor your first sequencing run using the GUI to make sure basecalling is working as expected.
+### Monitor your first sequencing run using the GUI to make sure basecalling is working as expected.
+
