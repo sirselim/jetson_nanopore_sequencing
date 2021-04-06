@@ -111,7 +111,7 @@ The `bin` directory contains the binaries that we are interested in.
 
 ### Copy Guppy to `/opt/ont`
 
-The below code assumes that you are currently in the directory where you extracted Guppy above. You should have the `ont-guppy` folder present at this level. The below will copy this directory and everything in it over to `/opt/ont`.
+The below code assumes that you are currently in the directory where you extracted Guppy above. You should have the `ont-guppy` folder present at this level. The below will copy this directory and everything in it over to `/opt/ont`. You will likely need `sudo` (super user) access to the machine you are working on for this and many following steps.
 
 |:exclamation: this will overwright any version of Guppy that is present at this same location. Make sure this is what you want to do.|
 |-------------------|
@@ -119,6 +119,7 @@ The below code assumes that you are currently in the directory where you extract
 ```sh
 sudo cp -r ont-guppy /opt/ont/
 ```
+
 ### Create sym links to `/usr/bin`
 
 This is where what I do differs from the suggested instructions. I create symlinks of the newly copied binaries to `/usr/bin/` essentially making this version of Guppy (and in this case ONTs version of minimap2) the system-wide versions of these tools. Now this might not be for everyone, but I'm comfortable with what I am doing and this works well for me. As I stated above I will explain how I deal with other versions of Guppy later on.
