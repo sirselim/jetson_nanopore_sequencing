@@ -103,7 +103,7 @@ The above example is for Guppy 4.3.4, but you can substitute for the compressed 
 This should result in a folder called `ont-guppy`, which if you run `ls` on should give something like this:
 
 ```sh
-$ls ont-guppy
+$ ls ont-guppy
 bin  data  lib
 ```
 
@@ -159,23 +159,58 @@ $ guppy_basecall_client --version
 
 Notice that this is the correct version for MinION MinKNOW 21.02.1. Great!
 
-### 
+### Modify MinKNOW `app_conf`
 
-1. Modify MinKNOW's application config to enable GPU basecalling and set appropriate settings (where "myuser"is the appropriate location for your installation):
+This is an extremely crucial step for the live GPU basecalling to actually work, possibly the most important. What we are going to do here is tell the `minknow` service running in the background exactly which Guppy (and minimap2) binaries it should be looking at and loading.
 
-     sudo /opt/ont/minknow/bin/config_editor --conf application --filename /opt/ont/minknow/conf/app_conf \
+The file we're looking for is `app_conf`, it's located at this path: `/opt/ont/minknow/conf/app_conf`
 
-    --set guppy.server_executable="/home/myuser/ont-guppy/bin/guppy_basecall_server" \
+Now this is again where I differ in my process. I modify this file manually as opposed to using a CLI configuration tool, in my opinion that that process is 'clunky' and it's easier using a text editor to make the changes. It also means that you can make changes to other Guppy related parameters while you're in there (i.e. you might want to adjust basecalling parameters based on your GPU) - discussion of these parameters is outside of this and I might talk about it further below.
 
-    --set guppy.client_executable="/home/myuser/ont-guppy/bin/guppy_basecaller" \
+So to modify `app_conf` I use a text editor such as `nano` but you can use whatever you wish.
 
-    --set guppy.gpu_calling=1 \
+My example is:
 
-    --set guppy.num_threads=3 \
+```sh
+sudo nano /opt/ont/minknow/conf/app_conf
+```
 
-    --set guppy.ipc_threads=2
+You will then need to navigate close to the bottom of the file, you're looking for the section that starts with:
 
+```sh
+"guppy": {
+            "cereal_class_version": 0,
+            "gpu_calling": true,
+            "gpu_devices": "cuda:all",
+            ...
+```
 
+In this section you will notice various path variables being set, this is what we want to ensure is correct. We want these paths set to the locatation of our sym linked binaries, so the `/usr/bin/...` versions. Here is that relevant section of one of my systems `app_conf` files as an example of what you are looking at as a final result:
+
+```sh
+        "guppy": {
+            "cereal_class_version": 0,
+            "gpu_calling": true,
+            "gpu_devices": "cuda:all",
+            "server_port": 5555,
+            "max_queued_reads": 5000,
+            "max_client_queued_reads": 20000,
+            "max_samples_in_flight": 50000000,
+            "client_reconnect_attempts": 3,
+            "max_refused_reads_before_restart": 5000,
+            "num_threads": 4,
+            "ipc_threads": 4,
+            "gpu_runners_per_device": 48,
+            "chunks_per_runner": 256,
+            "client_executable": "/usr/bin/guppy_basecall_client",
+            "barcoding_executable": "/usr/bin/guppy_barcoder",
+            "alignment_executable": "/usr/bin/guppy_aligner",
+            "server_executable": "/usr/bin/guppy_basecall_server",
+            "config_file": "dna_r9.4.1_450bps_fast_prom.cfg",
+            "log_path": {
+                "value0": "/var/log/minknow/guppy"
+            },
+```
 ### Stop the MinKNOW service
 
 ```sh
