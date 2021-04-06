@@ -130,6 +130,8 @@ Now we have copied `ont-guppy` and all it's contents this is where what I do dif
 
 **An important note:** this step has been modified after the release of Guppy 4.2.2, which introduces `guppy_basecall_client` in place of the `guppy_basecaller`. This has a HUGE influence when we get to modifying the `app_conf` file soon.
 
+This is the step that has been tripping a lot of people up lately, and is the major step that has not been updated in the ONT instructions.
+
 -----
 
 This code will create sym links of the binaries:
