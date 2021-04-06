@@ -185,7 +185,7 @@ You will then need to navigate close to the bottom of the file, you're looking f
             ...
 ```
 
-The above is actually very important in terms of the parameters that indicate that we are infact using GPU versions of Guppy binaries. So ensure yours looks like this.
+The above is actually very important in terms of the parameters that indicate that we are in fact using GPU versions of Guppy binaries. So ensure yours looks like this.
 
 In this section you will also notice various path variables being set, this is what we want to ensure is correct. In particular these paths:
 
