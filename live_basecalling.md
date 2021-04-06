@@ -3,7 +3,14 @@
 
 # Setting up GPU live basecalling
 
+Before beginning it is recommended that you have registered for the ONT community portal and have access there. It is a great and helpful place to go to ask questions of the Nanopore community and ONT experts.
+
+What I am going to detail below is my variation on the instructions that were created by ONT ([here](https://community.nanoporetech.com/posts/enabling-gpu-basecalling-f)). The instructions at this link, as of the 6^th^ April 2021 are slightly out of date and don't reflect the current complete set up to get up and running with GPU live basecalling. So what follows is my interpretation of the instructions. I have stated above and I will reiterate here, by following the below you recognise that neither myself or Oxford Nanopore Technologies are responsible for any damage to hardware, software, or consumables - that's all on you. So if you aren't comfortable 'tinkering' around in Linux then I suggest seeking additional support.
+
+Below there may well be dragons, you have been warned enough, so without further ado lets move forward shall we?
 ## Caveats
+
+The below caveats have been sourced from this ONT community forum post ([link](https://community.nanoporetech.com/posts/enabling-gpu-basecalling-f)). 
 
 * **GPU basecalling is supported on Linux and NVIDIA GPUs only.**
   * The GPU must be installed on the same system to which the MinION is connected.
