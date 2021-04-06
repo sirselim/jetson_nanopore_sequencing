@@ -86,10 +86,28 @@ So, as stated above, the current MinION MinKNOW release is 21.02.1, and it needs
 
 This is where you are going to require access to the ONT community portal. Various pieces of ONT software are distributed (***freely***) from this portal, but only from this portal, i.e. they cannot be shared by third parties. So once you have access to the portal you can continue.
 
-You should check out this post, as well as this one. These will guide you in where and how to download the version of GPU Guppy that you will require.
+You should check out the software downloads page [here](https://community.nanoporetech.com/downloads), [this](https://community.nanoporetech.com/posts/enabling-gpu-basecalling-f) post, as well as [this](https://community.nanoporetech.com/posts/no-ampere-compatible-guppy) one. These will guide you in where and how to download the version of GPU Guppy that you will require.
+
+Note: the last link above is a post that deals with issues that arose with the new Nvidia Ampere GPUs. This has meant that versions of Guppy have had to be specially 'patched' for Ampere compatibility, however after Guppy 4.3.4 this should be the last time we will see this and the pre-built versions available should work just fine.
 
 ### Extract the version of Guppy you downloaded
 
+Once you have downloaded the correct (GPU) version of Guppy you can extract it:
+
+```sh
+tar -xzvf ont-guppy_4.3.4_linux64.tar.gz
+```
+
+The above example is for Guppy 4.3.4, but you can substitute for the compressed file of the version you downloaded.
+
+This should result in a folder called `ont-guppy`, which if you run `ls` on should give something like this:
+
+```sh
+$ls ont-guppy
+bin  data  lib
+```
+
+The `bin` directory contains the binaries that we are interested in.
 
 ### Copy Guppy to `/opt/ont`
 
