@@ -127,7 +127,9 @@ sudo cp -r ont-guppy /opt/ont/
 Now we have copied `ont-guppy` and all it's contents this is where what I do differs from the suggested instructions. I create sym links of the newly copied binaries to `/usr/bin/` essentially making this version of Guppy (and in this case ONTs version of minimap2) the system-wide versions of these tools. Now this might not be for everyone, but I'm comfortable with what I am doing and this works well for me. As I stated above I will explain how I deal with other versions of Guppy later on.
 
 -----
+
 **An important note:** this step has been modified after the release of Guppy 4.2.2, which introduces `guppy_basecall_client` in place of the `guppy_basecaller`. This has a HUGE influence when we get to modifying the `app_conf` file soon.
+
 -----
 
 This code will create sym links of the binaries:
