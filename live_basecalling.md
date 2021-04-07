@@ -387,7 +387,9 @@ $ guppy_basecaller_4.4.2 --version
 : Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 4.4.2+9623c16
 ```
 
-... and just to check the "MinKNOW version" once more:
+You'll notice that the output should be exactly the same, if it's not something has gone wrong.
+
+Now as a final check we can output the "MinKNOW version" once more:
 
 ```sh
 $ guppy_basecaller --version
