@@ -345,11 +345,56 @@ Hopefully though this should get up up and running.
 The below is extra topics I'd like to delve into but that aren't directly related to live basecalling as such.
 ## Additional Guppy versions
 
-**... work in progress ...**
-
 The point of this section is that you can have multiple versions of Guppy downloaded and extracted and use these without breaking your live basecalling setup. This is useful if you want to recall data generated on the current setup with say the latest version of Guppy after the fact, i.e. you might want to use Guppy 4.5.2 on that data you generated and basecalled originally using 4.3.4,
 
-I'll try and update this asap. Please check back soon.
+This process is actually really straightforward. It really just involves pulling the specific pre-built binaries from ONT, extracting them somewhere and then running them locally. On a couple of my machines I have 5-8 versions of Guppy sitting in a local space that I'm able to run and revisit particular things if required. Doing this means that there is no chance of conflict between the version required for MinKNOW to run live basecalling. 
+
+### Overview
+
+I just have a directory (/home/myuser/software/guppy/) where I download and extract the pre-built binaries. They can then be called either directly: 
+
+* i.e. /home/myuser/software/guppy/4.4.2/bin/guppy_basecaller --version
+
+ ... or you can create a specific sym link to somewhere on your `$PATH`:
+
+* i.e. you can create a sym link and name the link in say `/usr/bin/` something like `guppy_basecaller_4.4.2` so that you could then just use it from the `$PATH` in any terminal.
+
+Below is an example from one of my machines with output from the commands.
+### Example from one of my MinION set ups
+
+The below is an example of one of my machines.
+
+Here is Guppy extracted to a local directory. It can be run directly from here:
+
+```sh
+# full path to binary
+$ ~/software/guppy/4.4.2/ont-guppy/bin/guppy_basecaller --version
+: Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 4.4.2+9623c16
+```
+
+We can also create sym links into our PATH. ***NOTE: it's important that the name is unique if you are doing this, you don't want to overwrite the link to the version MinKNOW 'sees'.***
+
+```sh
+# create sym link to /usr/bin
+$ sudo ln -s ~/software/guppy/4.4.2/ont-guppy/bin/guppy_basecaller /usr/bin/guppy_basecaller_4.4.2
+```
+
+We can now call this version from any terminal without pointing directly at the local directory:
+
+```sh
+# run from the above sym linked binary
+$ guppy_basecaller_4.4.2 --version
+: Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 4.4
+```
+
+... and just to check the "MinKNOW version" once more:
+
+```sh
+$ guppy_basecaller --version
+: Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 4.3.4+ecb2805
+```
+
+So this all looks pretty good. There is limit to the number of Guppy versions you can have set up in this manner.
 
 ## Changing GPU optimisation parameters
 
