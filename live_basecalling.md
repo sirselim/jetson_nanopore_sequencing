@@ -384,7 +384,7 @@ We can now call this version from any terminal without pointing directly at the 
 ```sh
 # run from the above sym linked binary
 $ guppy_basecaller_4.4.2 --version
-: Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 4.4
+: Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 4.4.2+9623c16
 ```
 
 ... and just to check the "MinKNOW version" once more:
