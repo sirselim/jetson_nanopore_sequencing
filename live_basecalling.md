@@ -350,7 +350,7 @@ The below is extra topics I'd like to delve into but that aren't directly relate
 
 The point of this section is that you can have multiple versions of Guppy downloaded and extracted and use these without breaking your live basecalling setup. This is useful if you want to recall data generated on the current setup with say the latest version of Guppy after the fact, i.e. you might want to use Guppy 4.5.2 on that data you generated and basecalled originally using 4.3.4,
 
-This process is actually really straightforward. It really just involves pulling the specific pre-built binaries from ONT, extracting them somewhere and then running them locally. On a couple of my machines I have 5-8 versions of Guppy sitting in a local space that I'm able to run and revisit particular things if required. Doing this means that there is no chance of conflict between the version required for MinKNOW to run live basecalling. 
+This process is actually really straightforward. It really just involves pulling the specific pre-built binaries from ONT, extracting them somewhere and then running them locally. On a couple of my machines I have 12 or so different versions of Guppy sitting in a local space that I'm able to run and revisit particular things if required. Doing this means that there is no chance of conflict between the version required for MinKNOW to run live basecalling. 
 
 ### Overview
 
