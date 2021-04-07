@@ -365,9 +365,16 @@ I just have a directory (/home/myuser/software/guppy/) where I download and extr
 Below is an example from one of my machines with output from the commands.
 ### Example from one of my MinION set ups
 
-The below is an example of one of my machines.
+The below is an example of one of my machines which has many different versions of Guppy available. Here is an `ls` of the local directory:
 
-Here is Guppy extracted to a local directory. It can be run directly from here:
+```sh
+~/software/guppy$ ls
+3.1.5  3.2.4  3.3.0  3.3.3  3.4.1  3.4.3  4.2.2  4.2.2-CUDA11  4.3.4  4.4.1  4.4.2  4.5.2
+```
+
+All up that is **12** different versions of Guppy that I am able to use for local basecalling.
+
+Here is a walk through using Guppy 4.4.2 as an example. As above it is extracted to a local directory. It can be run directly from this location:
 
 ```sh
 # full path to binary
