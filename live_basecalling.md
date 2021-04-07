@@ -343,6 +343,9 @@ For the first sequencing run you should be able to monitor using the MinKNOW GUI
 Hopefully though this should get up up and running.
 
 The below is extra topics I'd like to delve into but that aren't directly related to live basecalling as such.
+
+-----
+
 ## Additional Guppy versions
 
 The point of this section is that you can have multiple versions of Guppy downloaded and extracted and use these without breaking your live basecalling setup. This is useful if you want to recall data generated on the current setup with say the latest version of Guppy after the fact, i.e. you might want to use Guppy 4.5.2 on that data you generated and basecalled originally using 4.3.4,
@@ -397,6 +400,8 @@ $ guppy_basecaller --version
 ```
 
 So this all looks pretty good. There is limit to the number of Guppy versions you can have set up in this manner.
+
+-----
 
 ## Changing GPU optimisation parameters
 
