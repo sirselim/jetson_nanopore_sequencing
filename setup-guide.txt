@@ -21,7 +21,7 @@ cd ./jetson_nanopore_sequencing
 # download guppy from ONT servers
 # NOTE: minknow requires specific versions of guppy for live base calling, using the wrong version will result in crashes
 # you can find an updated table of compatible versions here: https://github.com/sirselim/jetson_nanopore_sequencing#minknow--guppy-compatibility
-# this is the latest version of guppy for the current Minknow in release (21.02.1, minknow-core 4.2.5)
+# this is the latest version of guppy for the current Minknow in release (21.02.5, minknow-core 4.2.5)
 wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_4.3.4_linuxaarch64_cuda10.tar.gz
 # extract required packages
 tar -xzvf *_linuxaarch64_cuda10.tar.gz
