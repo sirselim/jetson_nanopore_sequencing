@@ -25,7 +25,7 @@ cd ./jetson_nanopore_sequencing
 wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_4.3.4_linuxaarch64_cuda10.tar.gz
 # extract required packages
 tar -xzvf *_linuxaarch64_cuda10.tar.gz
-unzip h5py.zip 
+unzip ./libs/python3.7/h5py.zip 
 
 
 # 2. full system update and upgrade
@@ -60,9 +60,11 @@ sudo apt update
 # - ont-system-identification 
 # - ont-configuration-customer-minit 
 # - minknow-core-minit-offline
-# BUT we can use the predefined list of packages
-cat ont-package-list-xavier.txt | xargs sudo apt-get install
-
+# the 'manual' way
+sudo apt install minknow-core-minit-offline ont-bream4-minit ont-kingfisher-ui-minit ont-remote-support ont-system-identification ont-configuration-customer-minit
+# BUT we could use the predefined list of packages
+cat ont-package-list-xavier.txt | xargs sudo apt-get install -y
+# NOTE: there are reports that the xargs approach above has issues, if you find this issue use the manual approach
 
 # NOTE: this step has been modified after the release of guppy 4.2.2, which introduces guppy_basecall_client
 # in place of the guppy_basecaller
@@ -96,7 +98,7 @@ sudo nano app_conf
 cd ~/jetson_nanopore_sequencing
 sudo apt install libhdf5-dev
 sudo rm -rf /opt/ont/minknow/ont-python/lib/python3.7/site-packages/h5py/
-sudo cp -r h5py/ /opt/ont/minknow/ont-python/lib/python3.7/site-packages/
+sudo cp -r libs/python3.7/h5py/ /opt/ont/minknow/ont-python/lib/python3.7/site-packages/
 
 
 # 9. copy minknow.service for systemd set up and restart the service
