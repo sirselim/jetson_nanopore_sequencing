@@ -147,6 +147,23 @@ This is the step that has been tripping a lot of people up lately, and is the ma
 
 -----
 
+|:exclamation: I want to disclaim here that there is an official `config_editor` tool to make these changes in a more automated way than what I'm going to document. However, for whatever reason I've found the manual approach much more consistent while allowing me to fine tweak numerous settings whilst in the conf file - again your milage may vary.
+
+If this is something you want to test the below is an example:
+
+```sh
+sudo /opt/ont/minknow/bin/config_editor --conf application --filename /opt/ont/minknow/conf/app_conf \
+--set guppy.server_executable="/opt/ont/guppy/bin/guppy_basecall_server" \
+--set guppy.client_executable="/opt/ont/guppy/bin/guppy_basecall_client" \
+--set guppy.gpu_calling=1 \
+--set guppy.num_threads=16 \
+--set guppy.ipc_threads=2
+```
+Please note I have not tuned/optimised the above parameters, it's just the example ONT give.|
+|-------------------|
+
+-----
+
 This code will create sym links of the binaries:
 
 ```sh
