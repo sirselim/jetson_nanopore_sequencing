@@ -1,16 +1,25 @@
 |:exclamation: please be fore warned that by following this set up guide neither the authors or Oxford Nanopore Technology (ONT) are liable for any hardware/consumable damage or data loss.|
 |-------------------|
 
+-----
+
+_last modified: 22nd June 2021_  
+Updated inline with recent MinKNOW release (21.06.0, Guppy 5.0.11).
+
+-----
+
 # Setting up GPU live basecalling
 
 Before beginning it is recommended that you have registered for the ONT community portal and have access there. It is a great and helpful place to go to ask questions of the Nanopore community and ONT experts. If you haven't joined the community you can do so [here](https://community.nanoporetech.com/). If you are part of an institute that have an account with ONT it is likely that you can be added under that, so it's worth asking around to see if someone can do that for you.
 
 You will need to be a member of the ONT community portal to download particular pieces of software, so please go and set that account up before trying to follow along.
+
 ## Preamble
 
 What I am going to detail below is my variation on the instructions that were created by ONT ([here](https://community.nanoporetech.com/posts/enabling-gpu-basecalling-f)). The instructions at this link, as of the **6<sup>th</sup> April 2021** are slightly out of date and don't reflect the current complete set up to get up and running with GPU live basecalling. So what follows is my interpretation of the instructions. I have stated above and I will reiterate here, ***by following the below you recognise that neither myself or Oxford Nanopore Technologies are responsible for any damage to hardware, software, or consumables as well as data*** - that's all on you. So if you aren't comfortable 'tinkering' around in Linux then I suggest seeking additional support.
 
 Below there may well be dragons, you have been warned enough, so without further ado lets move forward shall we?
+
 ## Caveats
 
 The below caveats have been sourced from this ONT community forum post ([link](https://community.nanoporetech.com/posts/enabling-gpu-basecalling-f)). 
@@ -24,6 +33,7 @@ The below caveats have been sourced from this ONT community forum post ([link](h
 ## The process
 
 OK, so the below steps go into detail around how to get up and running. They also include a little discussion/insight around some of the 'pitfalls' and particular quirks that may arise.
+
 ### Ensure you have MinKNOW installed
 
 I'm making some assumptions when writing this, and one of these is that you are comfortable working in a Linux environment. Another is that you probably already have a Linux computer set up with ONT software (i.e. the correct repositories). The below is the code to do this but I won't delve any deeper than this as this particular document is concerned with getting live GPU basecalling up and running.
@@ -56,21 +66,22 @@ You should see something like this as output of the above:
 
 ```sh
 minion-nc:
-  Installed: 21.02.1-1~xenial
-  Candidate: 21.02.1-1~xenial
+  Installed: 21.06.0-1~xenial
+  Candidate: 21.06.0-1~xenial
   Version table:
- *** 21.02.1-1~xenial 500
+ *** 21.06.0-1~xenial 500
         500 http://mirror.oxfordnanoportal.com/apt xenial-stable/non-free amd64 Packages
         500 http://mirror.oxfordnanoportal.com/apt xenial-stable/non-free i386 Packages
         100 /var/lib/dpkg/status
 ```
 
 If you are having issues with getting MinION software / MinKNOW setup I suggest you go to the community forum and search for similar questions/issues, and if nothing turns up you can create your own.
+
 ### Getting the correct version of Guppy
 
 This is something that seems to cause constant confusion, and I can see why! The versions of MinKNOW and Guppy are tightly tied together, **BUT** it doesn't mean that the latest version of each piece of software works with each other... are you with me so far?
 
-What this means in practice is that currently the latest Linux version of MinKNOW for MinION is 21.02.1, which requires Guppy version 4.3.4. However, the latest and greatest version of Guppy is currently 4.5.2. Now many people will be tracking that latest Guppy version as it's nice to have all the new bells and whistles, but it **will not** play nicely with MinKNOW and will crash out as soon as you try to run a sequencing experiment with live basecalling. There are ways to have multiple versions present on a system without causing issues, but more on that later.
+What this means in practice is that currently the latest Linux version of MinKNOW for MinION is 21.06.0, which requires Guppy version 5.0.11. However, by the time you read this the latest and greatest version of Guppy is likely to be newer/higher. Now many people will be tracking that latest Guppy version as it's nice to have all the new bells and whistles, but it **will not** play nicely with MinKNOW and will crash out as soon as you try to run a sequencing experiment with live basecalling. There are ways to have multiple versions present on a system without causing issues, but more on that later.
 
 For now the below table should help you decided which versions of software you need to grab:
 
@@ -80,27 +91,29 @@ For now the below table should help you decided which versions of software you n
 |    20.06.17    |        4.0.5         | 4.0.21      | 4.0.11, 4.0.14, 4.0.15 |
 |    20.10.3     |        4.1.2         | 4.1.22      | 4.2.2, 4.2.3           |
 |    21.02.1     |        4.2.5         | 4.2.8       | 4.3.4                  |
+| 21.06.0 (21.05.8 MinIT) |	4.3.4 |	4.3.20 |	5.0.11 |
 
 *the above is a snapshot of the latest software versions, if you require a more complete overview you can find that [here](https://github.com/sirselim/jetson_nanopore_sequencing#minknow--guppy-compatibility).
 
-So, as stated above, the current MinION MinKNOW release is 21.02.1, and it needs Guppy 4.3.4
+So, as stated above, the current MinION MinKNOW release is 21.06.0, and it needs Guppy 5.0.11
+
 ### Download the correct version of Guppy
 
 This is where you are going to require access to the ONT community portal. Various pieces of ONT software are distributed (***freely***) from this portal, but only from this portal, i.e. they cannot be shared by third parties. So once you have access to the portal you can continue.
 
 You should check out the software downloads page [here](https://community.nanoporetech.com/downloads), [this](https://community.nanoporetech.com/posts/enabling-gpu-basecalling-f) post, as well as [this](https://community.nanoporetech.com/posts/no-ampere-compatible-guppy) one. These will guide you in where and how to download the version of GPU Guppy that you will require.
 
-Note: the last link above is a post that deals with issues that arose with the new Nvidia Ampere GPUs. This has meant that versions of Guppy have had to be specially 'patched' for Ampere compatibility, however after Guppy 4.3.4 this should be the last time we will see this and the pre-built versions available should work just fine.
+Note: the last link above is a post that deals with issues that arose with the new Nvidia Ampere GPUs. This meant that versions of Guppy have had to be specially 'patched' for Ampere compatibility, however after Guppy 4.3.4 the pre-built versions available should work just fine.
 
 ### Extract the version of Guppy you downloaded
 
 Once you have downloaded the correct (GPU) version of Guppy you can extract it:
 
 ```sh
-tar -xzvf ont-guppy_4.3.4_linux64.tar.gz
+tar -xzvf ont-guppy_5.0.11_linux64.tar.gz
 ```
 
-The above example is for Guppy 4.3.4, but you can substitute for the compressed file of the version you downloaded.
+The above example is for Guppy 5.0.11, but you can substitute for the compressed file of the version you downloaded.
 
 This should result in a folder called `ont-guppy`, which if you run `ls` on should give something like this:
 
@@ -162,10 +175,10 @@ You should see something like this:
 
 ```sh
 $ guppy_basecall_client --version
-: Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 4.3.4+ecb2805, client-server API version 4.0.0
+: Guppy Basecalling Software, (C) Oxford Nanopore Technologies, Limited. Version 5.0.11+2b6dbff, client-server API version 7.0.0
 ```
 
-Notice that this is the correct version for MinION MinKNOW 21.02.1. Great!
+Notice that this is the correct version for MinION MinKNOW 21.06.0. Great!
 
 ### Modify MinKNOW `app_conf`
 
@@ -232,6 +245,7 @@ We want these paths set to the location of our sym linked binaries, so the `/usr
 ```
 
 Don't be concerned that your `config_file` and various other variables are different, these are custom modifications I've made for the GPU on this machine (Nvidia Titan RTX). For now we just want to ensure we can get GPU basecalling running in MinKNOW live. Later on we can concentrate on optimising for speed and accuracy.
+
 ### Stop the MinKNOW service
 
 Once you have made the above edits and saved the file you will need to restart the `minknow` service that's running in the background. You do that with the below:
@@ -334,6 +348,7 @@ Mine looks like this:
 ```
 
 You can see that GPU `guppy_basecall_server` is running. Hooray!
+
 ### Monitor your next run closely
 
 Now hopefully you should be able to put in a flowcell and check that live GPU basecalling is working. It might be a good idea to use an old flowcell with a library already on it if you have something like that. Or you can put the device into playback/simulation mode, but that's not a 'simple' process - I'll leave it up to those people that want to dig a little deeper to explore this option.
@@ -348,7 +363,7 @@ The below is extra topics I'd like to delve into but that aren't directly relate
 
 ## Additional Guppy versions
 
-The point of this section is that you can have multiple versions of Guppy downloaded and extracted and use these without breaking your live basecalling setup. This is useful if you want to recall data generated on the current setup with say the latest version of Guppy after the fact, i.e. you might want to use Guppy 4.5.2 on that data you generated and basecalled originally using 4.3.4,
+The point of this section is that you can have multiple versions of Guppy downloaded and extracted and use these without breaking your live basecalling setup. This is useful if you want to recall data generated on the current setup with say the latest version of Guppy after the fact, i.e. you might want to use Guppy 5.0.11 on that data you generated and basecalled originally using 4.3.4,
 
 This process is actually really straightforward. It really just involves pulling the specific pre-built binaries from ONT, extracting them somewhere and then running them locally. On a couple of my machines I have 12 or so different versions of Guppy sitting in a local space that I'm able to run and revisit particular things if required. Doing this means that there is no chance of conflict between the version required for MinKNOW to run live basecalling. 
 
@@ -363,16 +378,17 @@ I just have a directory (/home/myuser/software/guppy/) where I download and extr
 * i.e. you can create a sym link and name the link in say `/usr/bin/` something like `guppy_basecaller_4.4.2` so that you could then just use it from the `$PATH` in any terminal.
 
 Below is an example from one of my machines with output from the commands.
+
 ### Example from one of my MinION set ups
 
 The below is an example of one of my machines which has many different versions of Guppy available. Here is an `ls` of the local directory:
 
 ```sh
 ~/software/guppy$ ls
-3.1.5  3.2.4  3.3.0  3.3.3  3.4.1  3.4.3  4.2.2  4.2.2-CUDA11  4.3.4  4.4.1  4.4.2  4.5.2
+3.1.5  3.2.4  3.3.0  3.3.3  3.4.1  3.4.3  4.2.2  4.2.2-CUDA11  4.3.4  4.4.1  4.4.2  4.5.2  5.0.7  5.0.11
 ```
 
-All up that is **12** different versions of Guppy that I am able to use for local basecalling.
+All up that is **14** different versions of Guppy that I am able to use for local basecalling.
 
 Here is a walk through using Guppy 4.4.2 as an example. As above it is extracted to a local directory. It can be run directly from this location:
 
