@@ -160,7 +160,7 @@ If you are having issues with getting MinION software / MinKNOW setup I suggest 
 
 -----
 
-**Quick Note:** I just want to reiterate here that we only really need one version of Guppy 'installed'/present on our system, the GPU version available via the Downloads page. This version of Guppy has been built against the requires libraries (i.e. CUDA) to enable GPU acceleration of basecalling. While it's listed as the GPU version, it still has the ability to CPU basecall. I imagine the reason ONT don't just have one version is that if you don't need/want the GPU option then the CPU version will be a smaller download and install. But for our purposes we want to enable live basecalling with MinKNOW, so we want to utalise a powerful GPU, thus we want to grab this version. If we want to do CPU calling we can use the same Guppy, so there is no need to either download or keep older Guppy CPU versions around in my opinion.
+**Quick Note:** I just want to reiterate here that we only really need one version of Guppy 'installed'/present on our system, the GPU version available via the Downloads page. This version of Guppy has been built against the required libraries (i.e. CUDA) to enable GPU acceleration of basecalling. While it's listed as the GPU version, it still has the ability to CPU basecall. I imagine the reason ONT don't just have one version is that if you don't need/want the GPU option then the CPU version will be a smaller download and install. But for our purposes we want to enable live basecalling with MinKNOW, so we want to utalise a powerful GPU, thus we want to grab this version. If we want to do CPU calling we can use the same Guppy, so there is no need to either download or keep older Guppy CPU versions around in my opinion.
 
 -----
 
