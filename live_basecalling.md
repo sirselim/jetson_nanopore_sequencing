@@ -3,8 +3,9 @@
 
 -----
 
-_last modified: 22nd June 2021_  
+_last modified: 29nd June 2021_  
 Updated inline with recent MinKNOW release (21.06.0, Guppy 5.0.11).
+There have been issues with people running 20.04 or other distro's and `minion-nc`.
 
 -----
 
@@ -29,6 +30,7 @@ The below caveats have been sourced from this ONT community forum post ([link](h
     * This is done at the user's own risk: mis-configuration of the GPU may result in slow basecalling and/or a large number of skipped reads.
       * i.e. if the basecall server crashes as a result of mis-parameterization. 
 * GPUs with a low amount of memory (**less than 4 GB**) may not work at all.
+* As of Guppy 5.0.X RAM consumption is higher than before, meaning that cards with lower amounts of memory (i.e. ~4Gb) will likely need modified parameters to run correctly.
 
 ## The process
 
@@ -49,12 +51,89 @@ wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add
 echo "deb http://mirror.oxfordnanoportal.com/apt bionic-stable non-free" | sudo tee /etc/apt/sources.list.d/nanoporetech.sources.list
 ```
 
+-----
+
+ONT are actively developing toward supporting Ubuntu Focal (20.04). While it hasn't been announced yet you can access the repository. **WARNING:** The below is completely untested by anyone other than myself, so if you aren't comfortable with what you are doing and don't know how to troubleshoot Linux issues I'd advise not to proceed.
+
+The Focal sources can be added:
+
+```sh
+sudo apt-get update
+sudo apt-get install wget
+wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
+echo "deb http://mirror.oxfordnanoportal.com/apt focal-stable non-free" | sudo tee /etc/apt/sources.list.d/nanoporetech.sources.list
+```
+
+I have yet to test these Focal packages, but it looks promising on my working system with the Bionic versions installed:
+
+```sh
+$ apt list --upgradable 
+Listing... Done
+minknow-core-minion-nc/stable 4.3.4-focal amd64 [upgradable from: 4.3.4-bionic]
+ont-bream4-minion/stable,stable 6.2.5-1~focal all [upgradable from: 6.2.5-1~bionic]
+ont-configuration-customer-minion/stable,stable 4.3.9-1~focal all [upgradable from: 4.3.9-1~bionic]
+ont-jwt-auth/stable 0.28-1~focal amd64 [upgradable from: 0.28-1~bionic]
+ont-kingfisher-ui-minion/stable,stable 4.3.22-1~focal all [upgradable from: 4.3.20-1~bionic]
+```
+
+The above is indicating that the 5 'core' ONT packages I have installed are wanting to be upgraded to their Focal equivalent (of the same version). I will test this when I get a chance and feed back. **To be clear, this is jumping the gun before ONT are ready and have announced that Focal is supported - so as always user beware, there be dragons!!**
+
+-----
+
 ##### install MinION software
+
+If you are running Ubuntu Bionic (18.04) the below should get the base ONT packages installed:
 
 ```sh
 sudo apt-get update
 sudo apt-get install minion-nc
 ```
+
+If that works for you great! You can skip ahead to [this](https://github.com/sirselim/jetson_nanopore_sequencing/blob/main/live_basecalling.md#getting-the-correct-version-of-guppy) section and continue setting up Guppy GPU. If you are experiencing issues please read on.
+
+As of the **MinKNOW 21.06.0** update the above cause's 'fun' dependency issues on Ubuntu 20.04 or other higher version distros. The issues result from the bundled Guppy packages in the `minion-nc` meta-package:
+
+```sh
+$ apt show minion-nc 
+Package: minion-nc
+Version: 21.06.0-1~bionic
+Priority: optional
+Section: science
+Maintainer: Oxford Nanopore Technologies <info@nanoporetech.com>
+Installed-Size: unknown
+Depends: minknow-core-minion-nc (= 4.3.4-bionic),
+         ont-bream4-minion (= 6.2.5-1~bionic),
+         ont-configuration-customer-minion (= 4.3.9-1~bionic),
+         ont-guppyd-for-minion (=5.0.11-1~bionic),
+         ont-guppy-cpu-for-minion (=5.0.11-1~bionic),
+         ont-kingfisher-ui-minion (= 4.3.20-1~bionic),
+         ont-vbz-hdf-plugin
+Breaks: minknow-nc (<< 19.02~~)
+Replaces: minknow-nc (<< 19.02~~)
+Download-Size: 3,438 B
+APT-Sources: http://mirror.oxfordnanoportal.com/apt bionic-stable/non-free amd64 Packages
+Description: ONT MinION meta-package for NC customers.
+```
+
+A ‘meta-package’ is a convenient way to bulk-install groups of applications, their libraries and documentation. Most of the time you don't need a meta-package, they are just suggestions of what the distributors believe you might want to install in bulk to deliver 'their recommended experience'.
+
+In the above you can see that `ont-guppyd-for-minion` and `ont-guppy-cpu-for-minion` are wanting to be installed when installing `minion-nc`. The whole purpose of this exercise is to get Guppy GPU installed and working, so there is no need to bring those other versions of Guppy along for the ride. So why try to install them?
+
+Thus, there is a 'manual' method to get around this. There are 5 packages that we need to install:
+
+    minknow-core-minion-nc 
+    ont-bream4-minion 
+    ont-configuration-customer-minion 
+    ont-kingfisher-ui-minion 
+    ont-vbz-hdf-plugin
+
+We can install these 5 packages without installing `minion-nc` like this:
+
+```sh
+sudo apt install minknow-core-minion-nc ont-bream4-minion ont-configuration-customer-minion ont-kingfisher-ui-minion ont-vbz-hdf-plugin
+```
+
+This may pull some other packages whilst installing, but you should no longer see dependency issues with the installation process and it should complete successfully. Now it's time to install Guppy GPU.
 
 ##### check version of software
 
@@ -78,6 +157,12 @@ minion-nc:
 If you are having issues with getting MinION software / MinKNOW setup I suggest you go to the community forum and search for similar questions/issues, and if nothing turns up you can create your own.
 
 ### Getting the correct version of Guppy
+
+-----
+
+**Quick Note:** I just want to reiterate here that we only really need one version of Guppy 'installed'/present on our system, the GPU version available via the Downloads page. This version of Guppy has been built against the requires libraries (i.e. CUDA) to enable GPU acceleration of basecalling. While it's listed as the GPU version, it still has the ability to CPU basecall. I imagine the reason ONT don't just have one version is that if you don't need/want the GPU option then the CPU version will be a smaller download and install. But for our purposes we want to enable live basecalling with MinKNOW, so we want to utalise a powerful GPU, thus we want to grab this version. If we want to do CPU calling we can use the same Guppy, so there is no need to either download or keep older Guppy CPU versions around in my opinion.
+
+-----
 
 This is something that seems to cause constant confusion, and I can see why! The versions of MinKNOW and Guppy are tightly tied together, **BUT** it doesn't mean that the latest version of each piece of software works with each other... are you with me so far?
 
@@ -128,7 +213,7 @@ The `bin` directory contains the binaries that we are interested in.
 
 The below code assumes that you are currently in the directory where you extracted Guppy above. You should have the `ont-guppy` folder present at this level. The below will copy this directory and everything in it over to `/opt/ont`. You will likely need `sudo` (super user) access to the machine you are working on for this and many following steps.
 
-|:exclamation: this will overwright any version of Guppy that is present at this same location. Make sure this is what you want to do.|
+|:exclamation: this will overwrite any version of Guppy that is present at this same location. Make sure this is what you want to do.|
 |-------------------|
 
 ```sh
@@ -157,13 +242,13 @@ sudo /opt/ont/minknow/bin/config_editor --conf application --filename /opt/ont/m
 --set guppy.num_threads=16 \
 --set guppy.ipc_threads=2
 ```
-Please note I have not tuned/optimised the above parameters, it's just the example ONT give.
+Please note I have not tuned/optimised the above parameters, it's just the example ONT give. Also note that the defined paths are also those from the ONT example and not what I use for all my working MinKNOW installs.
 
 -----
 
 So on with the 'manual' approach...
 
-This code will create sym links of the binaries:
+If you have copied the downloaded GPU version of Guppy over to `/opt/ont/ont-guppy` then this code will create sym links of the binaries and make them accessible system wide:
 
 ```sh
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller /usr/bin/guppy_basecaller
@@ -175,7 +260,7 @@ sudo ln -s /opt/ont/ont-guppy/bin/guppy_aligner /usr/bin/guppy_aligner
 sudo ln -s /opt/ont/ont-guppy/bin/minimap2 /usr/bin/minimap2
 ```
 
-You should now be able to check to see if they are infact being picked up by running the below:
+You should now be able to check to see if they are in fact being picked up by running the below:
 
 ```sh
 # can check versions linked are correct
