@@ -77,7 +77,10 @@ ont-jwt-auth/stable 0.28-1~focal amd64 [upgradable from: 0.28-1~bionic]
 ont-kingfisher-ui-minion/stable,stable 4.3.22-1~focal all [upgradable from: 4.3.20-1~bionic]
 ```
 
-The above is indicating that the 5 'core' ONT packages I have installed are wanting to be upgraded to their Focal equivalent (of the same version). I will test this when I get a chance and feed back. **To be clear, this is jumping the gun before ONT are ready and have announced that Focal is supported - so as always user beware, there be dragons!!**
+The above is indicating that the 5 'core' ONT packages I have installed are wanting to be upgraded to their Focal equivalent (of the same version). I will test this when I get a chance and feed back.
+
+> **⚠ WARNING: installing this is a risk!**  
+>  **To be clear, this is jumping the gun before ONT are ready and have announced that Focal is supported - so as always user beware, there be dragons!!**
 
 **UPDATE:** I pulled the triggered and tried installing from the Focal (20.04) ONT repos. Everything went very smoothly and I now have a working install:
 
