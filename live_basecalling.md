@@ -124,6 +124,8 @@ Jun 30 21:41:01 pop-os systemd[1]: Started MinKNOW Instrument Software for MinIO
 
 **UPDATE:** I just updated my laptop OS to 21.04 (Hirsute) and did a fresh install of MinKNOW and GPU Guppy using the Focal (20.04) repository. Everything seems to be running just fine. I did notice a permission issue when checking the running minknow service. This was resolved by adding the `minknow` user to a group and updating the permissions in the log and data directories. 
 
+![](https://i.imgur.com/D9mtrFo.jpg)
+
 -----
 
 ##### install MinION software
