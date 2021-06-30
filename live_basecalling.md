@@ -3,9 +3,10 @@
 
 -----
 
-_last modified: 29nd June 2021_  
-Updated inline with recent MinKNOW release (21.06.0, Guppy 5.0.11).
-There have been issues with people running 20.04 or other distro's and `minion-nc`.
+_last modified: 30nd June 2021_  
+Updated inline with recent MinKNOW release (21.06.0, Guppy 5.0.11).  
+There have been issues with people running 20.04 or other distro's and `minion-nc`.  
+Confirmed that Focal (20.04) repos seem to install and provide a working install of MinKNOW.
 
 -----
 
@@ -77,6 +78,48 @@ ont-kingfisher-ui-minion/stable,stable 4.3.22-1~focal all [upgradable from: 4.3.
 ```
 
 The above is indicating that the 5 'core' ONT packages I have installed are wanting to be upgraded to their Focal equivalent (of the same version). I will test this when I get a chance and feed back. **To be clear, this is jumping the gun before ONT are ready and have announced that Focal is supported - so as always user beware, there be dragons!!**
+
+**UPDATE:** I pulled the triggered and tried installing from the Focal (20.04) ONT repos. Everything went very smoothly and I now have a working install:
+
+```sh
+$ apt list --installed | grep '^ont\|minknow\|minion'
+
+minknow-core-minion-nc/stable,now 4.3.4-focal amd64 [installed]
+ont-bream4-minion/stable,stable,now 6.2.5-1~focal all [installed]
+ont-configuration-customer-minion/stable,stable,now 4.3.9-1~focal all [installed]
+ont-jwt-auth/stable,now 0.28-1~focal amd64 [installed,automatic]
+ont-kingfisher-ui-minion/stable,stable,now 4.3.22-1~focal all [installed]
+ont-vbz-hdf-plugin/stable,now 1.0.0-1~bionic amd64 [installed]
+```
+
+It's interesting to note that the `ont-vbz-hdf-plugin` package is still listed as bionic, but I don't beleive it will cause issues. The bionic repo is a mix of bionic and xenial packages and everything seems fine there.
+
+Here is the running minknow service showing the standalone (GPU) version of Guppy basecall server running as part of the 'chain':
+
+```sh
+$ sudo service minknow status
+● minknow.service - MinKNOW Instrument Software for MinION (daemon)
+     Loaded: loaded (/lib/systemd/system/minknow.service; enabled; vendor preset: enabled)
+     Active: active (running) since Wed 2021-06-30 21:41:01 NZST; 5s ago
+    Process: 30998 ExecStartPre=/bin/sleep 15 (code=exited, status=0/SUCCESS)
+   Main PID: 31002 (mk_manager_svc)
+      Tasks: 123 (limit: 76789)
+     Memory: 936.4M
+     CGroup: /system.slice/minknow.service
+             ├─31002 /opt/ont/minknow/bin/mk_manager_svc
+             ├─31007 /opt/ont/minknow/bin/crashpad_handler --database=/data/minknow/data/core-dump-db --metrics-dir=/data/minknow/data/core-dump-db --url=https://submit.backtrace.io/nanoporetech/6e3c4958cfd996b7000dadb02a931ff700986aa48b33903b5902dff716c95809/minidump --annotation=cmd_line=/opt/ont/minknow/bin/mk_man>
+             ├─31044 /usr/bin/guppy_basecall_server --config dna_r9.4.1_450bps_fast.cfg --port 5555 --log_path /data/minknow/log/minknow/guppy --ipc_threads 3 --max_queued_reads 5000 --chunks_per_runner 324 --num_callers 3 -x cuda:all --gpu_runners_per_device 24
+             ├─31045 /opt/ont/minknow/bin/grpcwebproxy --server_tls_cert_file=/opt/ont/minknow/conf/rpc-certs/localhost.crt --server_tls_key_file=/opt/ont/minknow/conf/rpc-certs/localhost.key --backend_addr=127.0.0.1:39593 --backend_tls_noverify --backend_tls=true --server_bind_address=0.0.0.0 --server_http_tls_port=>
+             ├─31046 /opt/ont/minknow/bin/basecall_manager --guppy-address 5555 --conf /opt/ont/minknow/conf --insecure 127.0.0.1:9504 --secure 127.0.0.1:0 --queued-command-count 1
+             ├─31059 /opt/ont/minknow/bin/crashpad_handler --database=/data/minknow/data/core-dump-db --metrics-dir=/data/minknow/data/core-dump-db --url=https://submit.backtrace.io/nanoporetech/6e3c4958cfd996b7000dadb02a931ff700986aa48b33903b5902dff716c95809/minidump --annotation=cmd_line=/opt/ont/minknow/bin/baseca>
+             └─31089 /opt/ont/minknow/bin/grpcwebproxy --server_tls_cert_file=/opt/ont/minknow/conf/rpc-certs/localhost.crt --server_tls_key_file=/opt/ont/minknow/conf/rpc-certs/localhost.key --backend_addr=127.0.0.1:35167 --backend_tls_noverify --backend_tls=true --server_bind_address=0.0.0.0 --server_http_tls_port=>
+
+Jun 30 21:40:46 pop-os systemd[1]: Stopped MinKNOW Instrument Software for MinION (daemon).
+Jun 30 21:40:46 pop-os systemd[1]: Starting MinKNOW Instrument Software for MinION (daemon)...
+Jun 30 21:41:01 pop-os systemd[1]: Started MinKNOW Instrument Software for MinION (daemon).
+```
+
+**UPDATE:** I just updated my laptop OS to 21.04 (Hirsute) and did a fresh install of MinKNOW and GPU Guppy using the Focal (20.04) repository. Everything seems to be running just fine. I did notice a permission issue when checking the running minknow service. This was resolved by adding the `minknow` user to a group and updating the permissions in the log and data directories. 
 
 -----
 
