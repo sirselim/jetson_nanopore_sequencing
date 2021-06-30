@@ -137,7 +137,7 @@ sudo apt-get install minion-nc
 
 If that works for you great! You can skip ahead to [this](https://github.com/sirselim/jetson_nanopore_sequencing/blob/main/live_basecalling.md#getting-the-correct-version-of-guppy) section and continue setting up Guppy GPU. If you are experiencing issues please read on.
 
-As of the **MinKNOW 21.06.0** update the above cause's 'fun' dependency issues on Ubuntu 20.04 or other higher version distros. The issues result from the bundled Guppy packages in the `minion-nc` meta-package:
+As of the **MinKNOW 21.06.0** update the above cause's 'fun' dependency issues on Ubuntu 20.04 or other higher version distros (also reported on 18.04 now as well). The issues result from the bundled Guppy packages in the `minion-nc` meta-package:
 
 ```sh
 $ apt show minion-nc 
