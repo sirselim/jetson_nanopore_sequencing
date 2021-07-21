@@ -12,7 +12,7 @@ A place to collate notes and resources of our journey into porting nanopore sequ
 ![xavier-minknow](https://github.com/sirselim/jetson_nanopore_sequencing/raw/main/images/xavier-ont.gif)
 
 (*click for video*)
-[![NX1c](https://img.youtube.com/vi/Oik6zC2SET4/0.jpg)](https://youtu.be/Oik6zC2SET4)
+[![NX1c](https://img.youtube.com/vi/Oik6zC2SET4/0.jpg)](https://youtu.be/Oik6zC2SET4 "click to play on youtube.com")
 
 **A sample of hardware images (for those so inclined)**
 
