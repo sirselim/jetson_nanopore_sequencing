@@ -506,6 +506,12 @@ If the result of the above command is not blank, manually kill the process:
 sudo killall guppy_basecall_server
 ```
 
+If your using `guppyd.service` should take care of the above as well:
+
+```sh
+sudo service guppyd stop
+```
+
 ### Start the MinKNOW service
 
 If you are happy you can then start the `minknow` service again:
@@ -544,6 +550,22 @@ It should look something like this:
              ├─12881 /opt/ont/minknow/bin/grpcwebproxy --server_tls_cert_file=/opt/ont/minknow/conf/rpc-certs/localhost.crt --server_tls_key_file=/opt/ont/minknow/conf/rpc-certs/localhost.key --backend_addr=127.0.0.1:8001 --backend_tls_noverify --backend_tls=true --server_bind_address=0.0.0.0 --server_http_tls_port=8>
              └─12889 /opt/ont/minknow/bin/crashpad_handler --database=/share/minknow/data/core-dump-db --metrics-dir=/share/minknow/data/core-dump-db --url=https://submit.backtrace.io/nanoporetech/6e3c4958cfd996b7000dadb02a931ff700986aa48b33903b5902dff716c95809/minidump --annotation=cmd_line=/opt/ont/minknow/bin/anal>
 ```
+
+### Start the guppyd service
+
+If you are using it (and you will be eventually), starting the `guppyd.service` will launch the `guppy_basecall_server`, which is required by MinKNOW for basecalling.
+
+You can start `guppyd.service` like so:
+
+```sh
+sudo service guppyd start
+# or
+systemctl start guppyd.service
+# or
+systemctl start guppyd
+```
+
+<sup>*</sup>there are lots of slightly different ways to interact with systemd services. :)
 
 ### Confirm that guppy_basecall_server is using the GPU
 
