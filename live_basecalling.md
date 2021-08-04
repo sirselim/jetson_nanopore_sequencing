@@ -3,7 +3,7 @@
 
 -----
 
-_last modified: 30nd June 2021_  
+_last modified: 4<sup>th</sup> August 2021_  
 Updated inline with recent MinKNOW release (21.06.0, Guppy 5.0.11).  
 There have been issues with people running 20.04 or other distro's and `minion-nc`.  
 Confirmed that Focal (20.04) repos seem to install and provide a working install of MinKNOW.
