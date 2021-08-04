@@ -188,6 +188,9 @@ This may pull some other packages whilst installing, but you should no longer se
 
 ##### check version of software
 
+> **⚠ WARNING: if you have been able to install minion-nc meta-package this step will work.**  
+> As of the June update to 21.06.0 there have been issues installing MinKNOW using the meta-package `minion-nc`.
+
 ```sh
 apt policy minion-nc
 ```
@@ -206,6 +209,89 @@ minion-nc:
 ```
 
 If you are having issues with getting MinION software / MinKNOW setup I suggest you go to the community forum and search for similar questions/issues, and if nothing turns up you can create your own.
+
+#### `guppyd.service`
+
+With the release of MinKNOW 21.06.0 it seems that there is a new service package, `guppyd.service`. My current "hot fix" doesn't install this as it wants to also pull the CPU version of Guppy (which we're not interested in). After talking to ONT this 'package' is going to be a requirement moving forwards (next MinKNOW update?). So I decided to look into it, and at it's heart it's simply a systemd service config - a file that gets run to tell the system to load particular software and set specific configurations, i.e. akin to what `minknow.service` does.
+
+So this `guppd.service` is going to be required to run the guppy basecall_server once this is taken away from the `minknow.service`. That made me wonder if I could just create the file (its just text at the end of the day), place it in the correct location, and then start the service. It turns out that you absolutely can! This is the default contents of that file:
+
+```
+[Unit]
+Description=Service to manage the guppy basecall server.
+Documentation=https://community.nanoporetech.com/protocols/Guppy-protocol/v/GPB_2003_v1_revQ_14Dec2018
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/guppy_basecall_server --log_path /var/log/guppy --config dna_r9.4.1_450bps_fast.cfg --port 5555 -x cuda:all 
+Restart=always
+User=root
+MemoryLimit=8G
+MemoryHigh=8G
+CPUQuota=200%
+
+[Install]
+Alias=guppyd.service
+WantedBy=multi-user.target
+```
+
+So this means that you don't have to download the specific ont-guppyd package. Instead you can add the `guppyd.service` file located in this repository to `/lib/systemd/system/` - this is the same location that `minknow.service` resides. You can also edit this file with any specific guppy parameters you want to have running, i.e. default model config to run, specific GPU optimisations, the path to the GPU binaries.
+
+So it's important to ensure that the `guppy_basecall_server` path matches the location where you have set up the GPU version of Guppy (see below for much more detail on that). By default `guppy_basecall_server` is expected to reside in `/usr/bin/` - and you can see this reflected in the `guppyd.service` file. Once this path is correct this file will ensure that the correct version of guppy is running in the background and is available to MinKNOW.
+
+There are other parameters that can be modified in this file, including memory options to match the amount of memory your particular GPU(s) have, and a CPUQuota option. If you feel comfortable tuning these options go for it, otherwise the default should be fine for most people.
+
+Once this file is in place the service can be started using either:
+
+```sh
+sudo service guppyd start
+```
+
+or:
+
+```sh
+systemctl start guppyd.service
+```
+
+You can then check it's status to make sure things are running OK:
+
+```sh
+sudo service guppyd status
+```
+
+or:
+
+```sh
+systemctl status guppyd.service
+```
+
+It should look a little like the below:
+
+```sh
+$ systemctl status guppyd.service
+● guppyd.service - Service to manage the guppy basecall server.
+     Loaded: loaded (/lib/systemd/system/guppyd.service; disabled; vendor preset: enabled)
+     Active: active (running) since Wed 2021-08-04 09:17:44 NZST; 2h 37min ago
+       Docs: https://community.nanoporetech.com/protocols/Guppy-protocol/v/GPB_2003_v1_revQ_14Dec2018
+   Main PID: 837 (guppy_basecall_)
+      Tasks: 48 (limit: 76789)
+     Memory: 708.0M (high: 8.0G limit: 8.0G)
+     CGroup: /system.slice/guppyd.service
+             └─837 /usr/bin/guppy_basecall_server --log_path /var/log/guppy --config dna_r9.4.1_450bps_fast.cfg --port 5555 -x cuda:all
+
+Aug 04 09:17:45 pop-os guppy_basecall_server[837]: max returned events: 50000
+Aug 04 09:17:45 pop-os guppy_basecall_server[837]: gpu device:          cuda:all
+Aug 04 09:17:45 pop-os guppy_basecall_server[837]: kernel path:
+Aug 04 09:17:45 pop-os guppy_basecall_server[837]: runners per device:  8
+Aug 04 09:17:46 pop-os guppy_basecall_server[837]: Config loaded:
+Aug 04 09:17:46 pop-os guppy_basecall_server[837]: config file:               /opt/ont/ont-guppy/data/dna_r9.4.1_450bps_fast.cfg
+Aug 04 09:17:46 pop-os guppy_basecall_server[837]: model file:                /opt/ont/ont-guppy/data/template_r9.4.1_450bps_fast.jsn
+Aug 04 09:17:46 pop-os guppy_basecall_server[837]: model version id           2021-05-17_dna_r9.4.1_minion_96_29d8704b
+Aug 04 09:17:46 pop-os guppy_basecall_server[837]: adapter scaler model file: None
+Aug 04 09:17:46 pop-os guppy_basecall_server[837]: Starting server on port: 5555
+```
+
+If you are doing this in order and haven't got to the below steps on setting up Guppy, then the above won't work - you won't see an active service because Guppy hasn't been set up yet (unless you have a previous version of guppy located at the same path used in `guppyd.service`). In this case you can stop the service (`sudo service guppyd stop`) and follow the below steps. Once you're ready you can start the `guppyd.service` again and hopefully you'll be up and running.
 
 ### Getting the correct version of Guppy
 
