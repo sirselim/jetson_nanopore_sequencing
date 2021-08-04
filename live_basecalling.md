@@ -210,7 +210,7 @@ minion-nc:
 
 If you are having issues with getting MinION software / MinKNOW setup I suggest you go to the community forum and search for similar questions/issues, and if nothing turns up you can create your own.
 
-#### `guppyd.service`
+#### [UPDATE: for MinKNOW 21.06.0 onwards] `guppyd.service`
 
 With the release of MinKNOW 21.06.0 it seems that there is a new service package, `guppyd.service`. My current "hot fix" doesn't install this as it wants to also pull the CPU version of Guppy (which we're not interested in). After talking to ONT this 'package' is going to be a requirement moving forwards (next MinKNOW update?). So I decided to look into it, and at it's heart it's simply a systemd service config - a file that gets run to tell the system to load particular software and set specific configurations, i.e. akin to what `minknow.service` does.
 
