@@ -1,4 +1,4 @@
-# Repackage MinMKNOW versions from a current installation
+# Repackage MinKNOW versions from a current installation
 
 ## Background
 
