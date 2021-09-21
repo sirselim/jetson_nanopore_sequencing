@@ -1,7 +1,13 @@
-# LAST UPDATED: 5th May 2021, 15:26:16
+# Last modified: 2021/09/21 16:24:12
 
-# Notes: before running this script there are several steps that require
-# user action, namely: setting up the correct user/password, creating 
+# IMPORTANT: this guide installs ONT software from the MinIT repository. This was the original
+# guide for setting up ONT sequencing software on arm-based Nvidia Jetson devices. Now that ONT
+# have discontinued the MinIT and the software is in maintenance mode this repository has moved
+# to using the Mk1c repository, which will be actively supported and updated by ONT for the near
+# future. This guide remains for legacy purposes.
+
+# Notes: before running through these set up notes there are several steps that 
+# require user action, namely: setting up the correct user/password, creating 
 # a partition for the NVMe drive (if present), and editing the configuration
 # files to include the correct directory structure. We will over time look
 # to automate much of this, but just be warned for now that there are steps

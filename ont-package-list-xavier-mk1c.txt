@@ -1,0 +1,12 @@
+minknow-core-minion-1c-offline
+ont-bream4-mk1c
+ont-configuration-customer-mk1c
+ont-kingfisher-ui-mk1c
+ont-vbz-hdf-plugin
+ont-minion1c-fpga
+ont-jwt-auth
+ont-minion1c-driver-4.4.38-minit
+ont-minion1c-driver-udev
+ont-remote-support
+ont-system-identification
+ont-vbz-hdf-plugin

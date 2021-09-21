@@ -1,0 +1,175 @@
+# Last modified: 2021/09/21 17:53:20
+
+# IMPORTANT: this guide installs ONT software from the M1kc repository, moving forward 
+# this will become the supported "software stack" to install on arm-based Nvidia Jetson 
+# devices. This replaces the original instructions which were based on the MinIT software.
+
+# Notes: before running through these set up notes there are several steps that 
+# require user action, namely: setting up the correct user/password, creating 
+# a partition for the NVMe drive (if present), and editing the configuration
+# files to include the correct directory structure. We will over time look
+# to automate much of this, but just be warned for now that there are steps
+# where you will need to get your hands dirty. ;)
+
+# 0. pre-setup
+# fresh inistall of Nvidia Jetson JetPack
+# create user: minit with pw: minit
+#TODO - determine whether this is still a requirement. For now it is working so will leave
+# it as it is.
+
+
+# 1. get everything together before we start
+# ensure in /home/minit dir
+cd ~/
+# clone repo
+git clone https://github.com/sirselim/jetson_nanopore_sequencing.git
+cd ./jetson_nanopore_sequencing
+# download guppy from ONT servers
+# NOTE: minknow requires specific versions of guppy for live base calling, using the wrong version will result 
+# in crashes you can find an updated table of compatible versions here: 
+# https://github.com/sirselim/jetson_nanopore_sequencing#minknow--guppy-compatibility
+# this is the latest version of guppy for the current Minknow in release (21.05.20, minknow-core 4.3.11)
+wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_5.0.14_linuxaarch64_cuda10.tar.gz
+# extract required packages
+tar -xzvf *_linuxaarch64_cuda10.tar.gz
+unzip ./libs/python3.7/h5py.zip 
+
+
+# 2. full system update and upgrade
+# shouldn't take long with latest JetPack
+sudo apt update
+sudo apt upgrade
+
+
+#TODO - this is making assumptions about previously created partitions
+# NOTE: you may not require this step, it depends on your storage setup
+# 3. mount ssd (this should be properly done, place holder for now)
+sudo mkdir /xavier_ssd
+sudo mkdir /xavier_ssd/minknow
+sudo mount /dev/nvme0n1p1 /xavier_ssd/
+
+
+# 4. add nanopore repo to system and update
+sudo cp nanoporetech.list /etc/apt/sources.list.d/
+# add key
+wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
+# copy the apt sources file from this repo to system to ensure pointing at mk1c repository
+sudo cp nanoporetech.sources.list /etc/apt/sources.list.d/
+# update repos
+sudo apt update
+
+
+# 5. install ont packages
+# this step is pulling from the latest ONT repo with minit packages
+# if you are building from cached debs replace this step with 'dpkg -i *.deb'
+# 12 packages required:
+# - minknow-core-minion-1c-offline
+# - ont-bream4-mk1c
+# - ont-configuration-customer-mk1c
+# - ont-kingfisher-ui-mk1c
+# - ont-vbz-hdf-plugin
+# - ont-minion1c-fpga
+# - ont-jwt-auth
+# - ont-minion1c-driver-4.4.38-minit
+# - ont-minion1c-driver-udev
+# - ont-remote-support
+# - ont-system-identification
+# - ont-vbz-hdf-plugin
+# the 'manual' way, these packages will pull in other requires depends
+sudo apt install minknow-core-minion-1c-offline ont-bream4-mk1c \
+  ont-configuration-customer-mk1c ont-kingfisher-ui-mk1c \
+  ont-vbz-hdf-plugin ont-minion1c-fpga
+# BUT we could use the predefined list of packages
+cat ont-package-list-xavier.txt | xargs sudo apt-get install -y
+# NOTE: there are reports that the xargs approach above has issues, if you find this issue use the manual approach
+
+
+# NOTE: this step has been modified after the release of guppy 4.2.2, which introduces guppy_basecall_client
+# in place of the guppy_basecaller
+# 6. copy guppy binaries to correct location, create sym links and check links and guppy version
+sudo cp -r ont-guppy /opt/ont/
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller /usr/bin/guppy_basecaller
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_client /usr/bin/guppy_basecall_client
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_server /usr/bin/guppy_basecall_server
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller_supervisor /usr/bin/guppy_basecaller_supervisor
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_barcoder /usr/bin/guppy_barcoder
+sudo ln -s /opt/ont/ont-guppy/bin/guppy_aligner /usr/bin/guppy_aligner
+sudo ln -s /opt/ont/ont-guppy/bin/minimap2 /usr/bin/minimap2
+# can check versions linked are correct
+guppy_basecaller --version
+guppy_basecall_server --version
+guppy_aligner --version
+guppy_barcoder --version
+guppy_basecall_client --version
+minimap2 --version
+
+
+# 7. edit the minknow conf files to change the location of data and check guppy paths and parameters
+# this can be done manually but using a text editor such as nano, assumes you know what you want to edit:
+#cd /opt/ont/minknow/conf
+#sudo nano user_conf 
+#sudo nano app_conf
+# there is a config editor that ONT have available
+# edit the app_conf file
+sudo /opt/ont/minknow/bin/config_editor --conf application \
+  --filename /opt/ont/minknow/conf/app_conf \
+  --set guppy.server_executable="/usr/bin/guppy_basecall_server" \
+  --set guppy.client_executable="/usr/bin/guppy_basecall_client" \
+  --set guppy.barcoding_executable="/usr/bin/guppy_basecall_barcoder" \
+  --set guppy.alignment_executable="/usr/bin/guppy_basecall_aligner" \
+  --set guppy.minimap_executable="/usr/bin/minimap2" \
+  --set guppy.chunks_per_runner="64"
+# NOTE: you can adjust chunks_per_runner if you think you can get more GPU performance
+# edit the user_conf to set a user define storage location (and log file location if desired)
+sudo /opt/ont/minknow/bin/config_editor --conf user \
+  --filename /opt/ont/minknow/conf/user_conf \
+  --set output_dirs.base="/data/minknow" \
+  --set output_dirs.logs="/data/minknow/log/minknow"
+
+
+# NOTE: this step is no longer require with latest mk1c builds - skip to the next step.
+# 8. install libhdf5-dev and copy across pre-compiled h5py (after removing old version)
+#TODO - check if this is still required with latest builds
+# move back to git repo dir 
+#cd ~/jetson_nanopore_sequencing
+#sudo apt install libhdf5-dev
+#sudo rm -rf /opt/ont/minknow/ont-python/lib/python3.7/site-packages/h5py/
+#sudo cp -r libs/python3.7/h5py/ /opt/ont/minknow/ont-python/lib/python3.7/site-packages/
+
+
+# 9. prevent boot into MinKNOW UI
+# there is a script that will start the UI upon log in, we can stop this to get a full desktop environment
+sudo sed -i '1 s/^/#/' /etc/xprofile
+# to revert this if you want to essentially have a mk1c and not access the desktop
+sudo sed -i '1 s/#//' /etc/xprofile
+
+
+# 10.
+#TODO - this is a horrible hack currently!
+sed -i 's/Serial=.*/Serial=NONE/g' identity.config
+sed -i 's/ProductCode=.*/ProductCode=NONE/g' identity.config
+sed -i 's/Class=.*/Class=NONE/g' identity.config
+sed -i 's/Build=.*/Build=NONE/g' identity.config
+
+
+# 11. copy minknow.service for systemd set up and restart the service
+#TODO - check this is still required, and check location of arm systemd files
+# on latest x86_x64 Linux builds minknow.service is located in /lib/systemd/system/
+# it likely doesn't matter, either seem to be respected
+sudo cp minknow.service /etc/systemd/system/
+service minknow restart
+# check
+service minknow status
+# can check that the services are running as root with htop
+
+
+# 12. you may require a system reboot at this stage.
+#TODO - confirm if this is required.
+
+
+## optional steps
+
+# install jetson-stats to allow nice hardware monitoring
+# https://github.com/rbonghi/jetson_stats
+sudo -H pip install -U jetson-stats
+# needs a reboot/logout and then can use jtop
