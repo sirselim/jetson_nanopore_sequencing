@@ -242,6 +242,12 @@ So it's important to ensure that the `guppy_basecall_server` path matches the lo
 
 There are other parameters that can be modified in this file, including memory options to match the amount of memory your particular GPU(s) have, and a CPUQuota option. If you feel comfortable tuning these options go for it, otherwise the default should be fine for most people.
 
+Before, running the service, you have to enable it first
+
+```sh
+sudo systemctl enable guppyd.service
+```
+
 Once this file is in place the service can be started using either:
 
 ```sh
