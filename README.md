@@ -8,7 +8,7 @@
 
 -----
 
-**UPDATE: [21^st^ Sept 2021]** we are transitioning from the old MinIT software to the Mk1c software. This is now fully working and is the recommended software to use on Nvidia Jetson devices (and any arm based device) moving forward. The old MinIT repository will eventually be removed by ONT, while the Mk1c repo will be maintained and updated. Please follow the guide detailed in `setup-guide-mk1c.txt`. This is still a little rough and will benefit from community testing.
+**UPDATE: [21<sup>st</sup> Sept 2021]** we are transitioning from the old MinIT software to the Mk1c software. This is now fully working and is the recommended software to use on Nvidia Jetson devices (and any arm based device) moving forward. The old MinIT repository will eventually be removed by ONT, while the Mk1c repo will be maintained and updated. Please follow the guide detailed in `setup-guide-mk1c.txt`. This is still a little rough and will benefit from community testing.
 
 -----
 
