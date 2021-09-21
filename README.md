@@ -106,9 +106,12 @@ A brief description of the included files in this repo. These are included to ea
 
 **Available:**
 
-* `setup-guide.txt`: a quick guide giving the basic steps to reproduce a running MinKnow environment on Jetson Xavier NX and AGX
-* `nanoporetech.list`: ONT MinIT repository file to be placed in `/etc/apt/sources.list.d/`
-* `ont-package-list-xavier.txt`: list of all ONT packages that need to be installed
+* `setup-guide-mk1c.txt`: a quick guide giving the basic steps to reproduce a running MinKnow environment on Jetson Xavier NX and AGX using the latest ONT Mk1c repository
+* `setup-guide-minit.txt`: [**LEGACY**] this guide is now replaced by the above running off Mk1c software, it is retained for legacy purposes but users should move to the Mk1c branch to get up to date software moving forwards 
+* `nanoporetech.sources.list`: ONT Mk1c repository file to be placed in `/etc/apt/sources.list.d/`
+* `nanoporetech.list`: [**LEGACY**] ONT MinIT repository file to be placed in `/etc/apt/sources.list.d/`
+* `ont-package-list-xavier-mk1c.txt`: [**LEGACY**] list of all ONT Mk1c packages that need to be installed* 
+* `ont-package-list-xavier-minit.txt`: [**LEGACY**] list of all ONT MinIT packages that need to be installed
 * `minknow.service`: this is a systemd config file that correctly loads the minknow service as the root user
 * `libs`: within this directory are precompiled versions of the `h5py` library. Most people will want to grab the python3.7 version, but the python2.7 version has been included as an option for 'legacy' versions of the MinKnow UI (now only possible if you have cached deb packages).
 
@@ -225,7 +228,7 @@ It's a rather unspoken topic, but the issues that arise between ONT software ver
 | 20.06.17                | 4.0.5                 | 4.0.21                | 4.0.11, 4.0.14, 4.0.15 |
 | 20.10.3                 | 4.1.2                 | 4.1.22                | 4.2.2, 4.2.3           |
 | 21.02.1                 | 4.2.5                 | 4.2.8                 | 4.3.4                  |
-| 21.06.0/21.06.2 (21.05.12 MinIT) | 4.3.4                 | 4.3.20/4.3.22                | 5.0.11, 5.0.12, 5.0.14                 |
+| 21.06.0/21.06.2 (21.05.20 MinIT) | 4.3.11                 | 4.3.20/4.3.22                | 5.0.11, 5.0.12, 5.0.13, 5.0.14                 |
 
 
 * for earlier releases and a lot more information see [here](https://community.nanoporetech.com/downloads/minion_release/release_notes).
