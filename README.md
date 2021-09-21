@@ -6,6 +6,9 @@
 |:memo: for more detailed information please feel free to browse the wiki pages [here](https://github.com/sirselim/jetson_nanopore_sequencing/wiki). |
 |------------------------|
 
+|:memo: **UPDATE:** we are transitioning from the old MinIT software to the Mk1c software. This is now fully working and is the recommended software to use on Nvidia Jetson devices (and any arm based device) moving forward. The old MinIT repository will eventually be removed by ONT, while the Mk1c repo will be maintained and updated. Please follow the guide detailed in `setup-guide-mk1c.txt`. This is still a little rough and will benefit from community testing.|
+|------------------------|
+
 # Nvidia Jetson Nanopore Sequencing
 A place to collate notes and resources of our journey into porting nanopore sequencing over to accessible, portable technology - Nvidia Jetson embedded computing.
 
