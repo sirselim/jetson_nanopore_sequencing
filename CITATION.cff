@@ -6,5 +6,5 @@ authors:
     orcid: https://orcid.org/0000-0003-3442-965X
 title: "Nanopore sequencing on Nvidia Jetson SoM boards"
 version: v0.2.1
-doi: 10.5281/zenodo.4287657
+doi: 10.5281/zenodo.4287656
 date-released: 2021-09-22
