@@ -146,10 +146,10 @@ sudo sed -i '1 s/#//' /etc/xprofile
 
 # 10.
 #TODO - this is a horrible hack currently!
-sed -i 's/Serial=.*/Serial=NONE/g' identity.config
-sed -i 's/ProductCode=.*/ProductCode=NONE/g' identity.config
-sed -i 's/Class=.*/Class=NONE/g' identity.config
-sed -i 's/Build=.*/Build=NONE/g' identity.config
+sudo sed -i 's/Serial=.*/Serial=NONE/g' /etc/oxfordnanopore/configs/identity.config   # Note: you can replace "NONE" with a value of your choice here if desired
+sudo sed -i 's/ProductCode=.*/ProductCode=NONE/g' /etc/oxfordnanopore/configs/identity.config
+sudo sed -i 's/Class=.*/Class=NONE/g' /etc/oxfordnanopore/configs/identity.config
+sudo sed -i 's/Build=.*/Build=NONE/g' /etc/oxfordnanopore/configs/identity.config
 
 
 # 11. copy minknow.service for systemd set up and restart the service
