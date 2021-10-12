@@ -1,4 +1,4 @@
-# Last modified: 2021/09/21 17:53:20
+# Last modified: 2021/10/13 11:34:00
 
 # IMPORTANT: this guide installs ONT software from the M1kc repository, moving forward 
 # this will become the supported "software stack" to install on arm-based Nvidia Jetson 
@@ -144,15 +144,22 @@ sudo sed -i '1 s/^/#/' /etc/xprofile
 sudo sed -i '1 s/#//' /etc/xprofile
 
 
-# 10.
-#TODO - this is a horrible hack currently!
-sudo sed -i 's/Serial=.*/Serial=NONE/g' /etc/oxfordnanopore/configs/identity.config   # Note: you can replace "NONE" with a value of your choice here if desired
-sudo sed -i 's/ProductCode=.*/ProductCode=NONE/g' /etc/oxfordnanopore/configs/identity.config
-sudo sed -i 's/Class=.*/Class=NONE/g' /etc/oxfordnanopore/configs/identity.config
-sudo sed -i 's/Build=.*/Build=NONE/g' /etc/oxfordnanopore/configs/identity.config
+# 10. need to overwrite the values that label this device as a Mk1c
+#TODO - this is a horrible hack currently! At this stage we're hacking the Mk1c software to make it more "universal" for ARM devices.
+# edit /etc/oxfordnanopore/configs/identity.config
+sudo sed -i -e 's/Serial=.*/Serial=NONE/g' -e 's/ProductCode=.*/ProductCode=NONE/g' -e 's/Class=.*/Class=NONE/g' -e 's/Build=.*/Build=NONE/g' /etc/oxfordnanopore/configs/identity.config   
+# Note: you can replace "NONE" with a value of your choice here if desired
+# edit /opt/ont/minknow/conf/app_conf
+sudo sed -i -e 's/"device_type":.*/"device_type": "MinION",/' -e 's/"host_type":.*/"host_type": "PC",/' /opt/ont/minknow/conf/app_conf
 
 
-# 11. copy minknow.service for systemd set up and restart the service
+# 11. Correct the MinKNOW UI zoom/scaling and remove the on screen keyboard
+sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
+# Note: if you are using a touch screen and would like the on screen keyboard then use the below:
+sudo sed -i -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
+
+
+# 12. copy minknow.service for systemd set up and restart the service
 #TODO - check this is still required, and check location of arm systemd files
 # on latest x86_x64 Linux builds minknow.service is located in /lib/systemd/system/
 # it likely doesn't matter, either seem to be respected
@@ -161,9 +168,15 @@ service minknow restart
 # check
 service minknow status
 # can check that the services are running as root with htop
+# WARNING: with recent releases of MinKNOW there have been issues with directory permissions, and the Mk1b device not being detected
+# a quick and dirty fix for this is to change the user and group from 'minknow' to 'root'. If you have these issues you can do run the below:
+sudo sed -i -e 's/User=.*/User=root/g' -e 's/Group=.*/Group=root/g' /lib/systemd/system/minknow.service
+# if you ever want to set this back to minknow that's easy as well:
+sudo sed -i -e 's/User=.*/User=minknow/g' -e 's/Group=.*/Group=minknow/g' /lib/systemd/system/minknow.service
+# just remember to always restart the service after modifying any of these files
 
 
-# 12. you may require a system reboot at this stage.
+# 13. you may require a system reboot at this stage. This is not always required, but for some people it sometimes fixes "niggles".
 #TODO - confirm if this is required.
 
 
