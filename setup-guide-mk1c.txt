@@ -28,8 +28,8 @@ cd ./jetson_nanopore_sequencing
 # NOTE: minknow requires specific versions of guppy for live base calling, using the wrong version will result 
 # in crashes you can find an updated table of compatible versions here: 
 # https://github.com/sirselim/jetson_nanopore_sequencing#minknow--guppy-compatibility
-# this is the latest version of guppy for the current Minknow in release (21.05.20, minknow-core 4.3.11)
-wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_5.0.14_linuxaarch64_cuda10.tar.gz
+# this is the latest version of guppy for the current Minknow in release (21.05.25, minknow-core 5.0.16)
+wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_5.0.16_linuxaarch64_cuda10.tar.gz
 # extract required packages
 tar -xzvf *_linuxaarch64_cuda10.tar.gz
 unzip ./libs/python3.7/h5py.zip 
@@ -60,7 +60,7 @@ sudo apt update
 
 
 # 5. install ont packages
-# this step is pulling from the latest ONT repo with minit packages
+# this step is pulling from the latest ONT repo with Mk1c packages
 # if you are building from cached debs replace this step with 'dpkg -i *.deb'
 # 12 packages required:
 # - minknow-core-minion-1c-offline
@@ -75,13 +75,10 @@ sudo apt update
 # - ont-remote-support
 # - ont-system-identification
 # - ont-vbz-hdf-plugin
-# the 'manual' way, these packages will pull in other requires depends
+# the 'manual' way, these packages will pull in other required depends
 sudo apt install minknow-core-minion-1c-offline ont-bream4-mk1c \
   ont-configuration-customer-mk1c ont-kingfisher-ui-mk1c \
   ont-vbz-hdf-plugin ont-minion1c-fpga
-# BUT we could use the predefined list of packages
-cat ont-package-list-xavier.txt | xargs sudo apt-get install -y
-# NOTE: there are reports that the xargs approach above has issues, if you find this issue use the manual approach
 
 
 # NOTE: this step has been modified after the release of guppy 4.2.2, which introduces guppy_basecall_client
@@ -105,11 +102,11 @@ minimap2 --version
 
 
 # 7. edit the minknow conf files to change the location of data and check guppy paths and parameters
-# this can be done manually but using a text editor such as nano, assumes you know what you want to edit:
+# this can be done manually by using a text editor such as nano, this assumes you know what you want to edit:
 #cd /opt/ont/minknow/conf
 #sudo nano user_conf 
 #sudo nano app_conf
-# there is a config editor that ONT have available
+# there is a config editor that ONT have made available (which is likely the easier approach to the above)
 # edit the app_conf file
 sudo /opt/ont/minknow/bin/config_editor --conf application \
   --filename /opt/ont/minknow/conf/app_conf \
@@ -119,7 +116,8 @@ sudo /opt/ont/minknow/bin/config_editor --conf application \
   --set guppy.alignment_executable="/usr/bin/guppy_basecall_aligner" \
   --set guppy.minimap_executable="/usr/bin/minimap2" \
   --set guppy.chunks_per_runner="64"
-# NOTE: you can adjust chunks_per_runner if you think you can get more GPU performance
+# NOTE: you can adjust chunks_per_runner depending on you available GPU, the default is 48, we've found 64 to be 
+# a good spot for the Jetson Xavier NX
 # edit the user_conf to set a user define storage location (and log file location if desired)
 sudo /opt/ont/minknow/bin/config_editor --conf user \
   --filename /opt/ont/minknow/conf/user_conf \
@@ -127,9 +125,9 @@ sudo /opt/ont/minknow/bin/config_editor --conf user \
   --set output_dirs.logs="/data/minknow/log/minknow"
 
 
-# NOTE: this step is no longer require with latest mk1c builds - skip to the next step.
+# TODO: remove this step as no longer required
+# NOTE: this step is no longer required with latest mk1c builds - skip to the next step.
 # 8. install libhdf5-dev and copy across pre-compiled h5py (after removing old version)
-#TODO - check if this is still required with latest builds
 # move back to git repo dir 
 #cd ~/jetson_nanopore_sequencing
 #sudo apt install libhdf5-dev
@@ -138,22 +136,27 @@ sudo /opt/ont/minknow/bin/config_editor --conf user \
 
 
 # 9. prevent boot into MinKNOW UI
-# there is a script that will start the UI upon log in, we can stop this to get a full desktop environment
+# there is a script that will start the Kingfisher UI upon log in, we can stop this to get a full desktop environment
 sudo sed -i '1 s/^/#/' /etc/xprofile
 # to revert this if you want to essentially have a mk1c and not access the desktop
 sudo sed -i '1 s/#//' /etc/xprofile
 
 
-# 10. need to overwrite the values that label this device as a Mk1c
+# 10. need to overwrite the values that identify the new device as a MinION Mk1c
 #TODO - this is a horrible hack currently! At this stage we're hacking the Mk1c software to make it more "universal" for ARM devices.
+# hopefully ONT will eventually release a mainline ARM64 version of the software that isn't tied to a specific device
 # edit /etc/oxfordnanopore/configs/identity.config
 sudo sed -i -e 's/Serial=.*/Serial=NONE/g' -e 's/ProductCode=.*/ProductCode=NONE/g' -e 's/Class=.*/Class=NONE/g' -e 's/Build=.*/Build=NONE/g' /etc/oxfordnanopore/configs/identity.config   
-# Note: you can replace "NONE" with a value of your choice here if desired
+# Note: you can replace the Serial value of "NONE" with a value of your choice here if desired 
+# (i.e. "My-XavNX", this is the value that will be used to name the device in ONT tools such as MinKNOW
+# we need to do something similar in the app_conf file:
 # edit /opt/ont/minknow/conf/app_conf
 sudo sed -i -e 's/"device_type":.*/"device_type": "MinION",/' -e 's/"host_type":.*/"host_type": "PC",/' /opt/ont/minknow/conf/app_conf
 
 
 # 11. Correct the MinKNOW UI zoom/scaling and remove the on screen keyboard
+# The Mk1c software is designed to run on small 7inch touch screens, so there is a zoom factor that scales the UI and it looks
+# bad on bigger screens. The software will also include a pop-up keyboard for touch screens by default. We turn these off.
 sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
 # Note: if you are using a touch screen and would like the on screen keyboard then use the below:
 sudo sed -i -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
@@ -176,7 +179,7 @@ sudo sed -i -e 's/User=.*/User=minknow/g' -e 's/Group=.*/Group=minknow/g' /lib/s
 # just remember to always restart the service after modifying any of these files
 
 
-# 13. Initialise attached MinIONs and GridIONs
+# 13. Initialise attached MinIONs
 # we have found that sometimes the MinION Mk1b isn't appearing/available in the MinKNOW UI
 # running the below should load the correct firmware and initialise the device
 sudo /opt/ont/minknow/bin/minion_ctl init
