@@ -176,7 +176,12 @@ sudo sed -i -e 's/User=.*/User=minknow/g' -e 's/Group=.*/Group=minknow/g' /lib/s
 # just remember to always restart the service after modifying any of these files
 
 
-# 13. you may require a system reboot at this stage. This is not always required, but for some people it sometimes fixes "niggles".
+# 13. Initialise attached MinIONs and GridIONs
+# we have found that sometimes the MinION Mk1b isn't appearing/available in the MinKNOW UI
+# running the below should load the correct firmware and initialise the device
+sudo /opt/ont/minknow/bin/minion_ctl init
+
+# 14. you may require a system reboot at this stage. This is not always required, but for some people it sometimes fixes "niggles".
 #TODO - confirm if this is required.
 
 
