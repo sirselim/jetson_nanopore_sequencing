@@ -1,4 +1,4 @@
-# Last modified: 2021/10/13 11:34:00
+# Last modified: 2021/11/31 21:47:42
 
 # IMPORTANT: this guide installs ONT software from the M1kc repository, moving forward 
 # this will become the supported "software stack" to install on arm-based Nvidia Jetson 
@@ -14,7 +14,7 @@
 # 0. pre-setup
 # fresh inistall of Nvidia Jetson JetPack
 # create user: minit with pw: minit
-#TODO - determine whether this is still a requirement. For now it is working so will leave
+# TODO - determine whether this is still a requirement. For now it is working so will leave
 # it as it is.
 
 
@@ -41,7 +41,7 @@ sudo apt update
 sudo apt upgrade
 
 
-#TODO - this is making assumptions about previously created partitions
+# TODO - this is making assumptions about previously created partitions
 # NOTE: you may not require this step, it depends on your storage setup
 # 3. mount ssd (this should be properly done, place holder for now)
 sudo mkdir /xavier_ssd
@@ -143,7 +143,7 @@ sudo sed -i '1 s/#//' /etc/xprofile
 
 
 # 10. need to overwrite the values that identify the new device as a MinION Mk1c
-#TODO - this is a horrible hack currently! At this stage we're hacking the Mk1c software to make it more "universal" for ARM devices.
+# TODO - this is a horrible hack currently! At this stage we're hacking the Mk1c software to make it more "universal" for ARM devices.
 # hopefully ONT will eventually release a mainline ARM64 version of the software that isn't tied to a specific device
 # edit /etc/oxfordnanopore/configs/identity.config
 sudo sed -i -e 's/Serial=.*/Serial=NONE/g' -e 's/ProductCode=.*/ProductCode=NONE/g' -e 's/Class=.*/Class=NONE/g' -e 's/Build=.*/Build=NONE/g' /etc/oxfordnanopore/configs/identity.config   
@@ -162,8 +162,9 @@ sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/
 sudo sed -i -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
 
 
-# 12. copy minknow.service for systemd set up and restart the service
-#TODO - check this is still required, and check location of arm systemd files
+# 12. copy minknow.service and guppyd.service across 
+# copy minknow.service for systemd set up and restart the service
+# TODO - check this is still required, and check location of arm systemd files
 # on latest x86_x64 Linux builds minknow.service is located in /lib/systemd/system/
 # it likely doesn't matter, either seem to be respected
 sudo cp minknow.service /etc/systemd/system/
@@ -177,6 +178,15 @@ sudo sed -i -e 's/User=.*/User=root/g' -e 's/Group=.*/Group=root/g' /lib/systemd
 # if you ever want to set this back to minknow that's easy as well:
 sudo sed -i -e 's/User=.*/User=minknow/g' -e 's/Group=.*/Group=minknow/g' /lib/systemd/system/minknow.service
 # just remember to always restart the service after modifying any of these files
+#
+# copy guppyd.service for systemd and check it's running
+sudo cp guppyd.service /lib/systemd/system/
+sudo systemctl restart guppyd.service
+# check
+systemctl status guppyd.service
+# NOTE: the guppyd.service file contained in this repository is set with 8GB GPUs in mind, i.e. the Jetson Xavier NX
+# these memory values can be edited to suit the GPU specs of a particular card/device, i.e. for the Xavier AGX a user
+# might modify values to something like 24GB or even 32GB (I currently haven't test this)
 
 
 # 13. Initialise attached MinIONs
@@ -185,7 +195,7 @@ sudo sed -i -e 's/User=.*/User=minknow/g' -e 's/Group=.*/Group=minknow/g' /lib/s
 sudo /opt/ont/minknow/bin/minion_ctl init
 
 # 14. you may require a system reboot at this stage. This is not always required, but for some people it sometimes fixes "niggles".
-#TODO - confirm if this is required.
+# TODO - confirm if this is required. I don't believe this to be required, but as a final hail mary it could be an option.
 
 
 ## optional steps
