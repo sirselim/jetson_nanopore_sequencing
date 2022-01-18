@@ -235,6 +235,8 @@ It's a rather unspoken topic, but the issues that arise between ONT software ver
 | 20.10.3                 | 4.1.2                 | 4.1.22                | 4.2.2, 4.2.3           |
 | 21.02.1                 | 4.2.5                 | 4.2.8                 | 4.3.4                  |
 | 21.06.0/21.06.2 (21.05.20 MinIT) | 4.3.11                 | 4.3.20/4.3.22                | 5.0.11, 5.0.12, 5.0.13, 5.0.14                 |
-
+| 21.06.13 | 4.3.12 | 4.3.28 | 5.0.12, 5.0.13, 5.0.14 |
+| 21.10.04 | 4.4.3 | 4.4.16 | 5.0.17  |
+| 21.11.07 | 4.5.4 | 4.5.5 | 5.1.12 |
 
 * for earlier releases and a lot more information see [here](https://community.nanoporetech.com/downloads/minion_release/release_notes).
