@@ -1,0 +1,333 @@
+{
+    "application": {
+        "cereal_class_version": 0,
+        "ports": {
+            "cereal_class_version": 0,
+            "grpc_port": 8004,
+            "grpc_secure_port": 8007,
+            "grpc_web_port": 8005,
+            "grpc_web_insecure_port": 8006
+        },
+        "ports_setup": {
+            "cereal_class_version": 0,
+            "min": 8000,
+            "max": 9000
+        },
+        "rpc": {
+            "cereal_class_version": 0,
+            "min_pollers": 2,
+            "max_pollers": 8,
+            "thread_timeout_ms": 60000,
+            "grpc_keepalive_time_ms": 2000,
+            "grpc_keepalive_timeout_ms": 30000,
+            "grpc_keepalive_permit_without_calls": 0,
+            "grpc_max_pings_without_data": 0,
+            "grpc_min_recv_ping_interval_without_data_ms": 1000,
+            "grpc_min_sent_ping_interval_without_data_ms": 1000,
+            "grpc_max_ping_strikes": 2,
+            "grpc_max_metadata_size": 16384,
+            "local_connection_only": "insecure_local_only",
+            "guest_access_default": "local_only"
+        },
+        "disk_space_warnings": {
+            "cereal_class_version": 0,
+            "intermediate": {
+                "cereal_class_version": 0,
+                "minimum_space_mb": 1000,
+                "warning_space_mb": 2000,
+                "warning_interval_mb": 100,
+                "only_enable_when_writing_reads": false
+            },
+            "logs": {
+                "minimum_space_mb": 100,
+                "warning_space_mb": 300,
+                "warning_interval_mb": 1000,
+                "only_enable_when_writing_reads": false
+            },
+            "reads": {
+                "minimum_space_mb": 40000,
+                "warning_space_mb": 100000,
+                "warning_interval_mb": 50000,
+                "only_enable_when_writing_reads": true
+            },
+            "queued_reads": {
+                "minimum_space_mb": 5000,
+                "warning_space_mb": 100000,
+                "warning_interval_mb": 1000,
+                "only_enable_when_writing_reads": true
+            }
+        },
+        "data_generation": {
+            "cereal_class_version": 0,
+            "signal_reader": "device",
+            "signal_reader_hdf_source": "",
+            "signal_reader_hdf_mode": "SingleRun",
+            "signal_reader_hdf_sample_rate_scale_factor": 1,
+            "device_type": "MinION",
+            "simulated_device": false
+        },
+        "tuning": {
+            "cereal_class_version": 0,
+            "max_analyser_threads": 1,
+            "basecaller_threads": 1,
+            "writer_threads": 2,
+            "writer_file_queue_threads": 0,
+            "read_writer": 1,
+            "generate_sleep_write": 10000,
+            "writer_file_failure_warning_interval": 3600,
+            "build_hdf_files_in_memory": false,
+            "hdf5_source_delay": 500000,
+            "hdf5_source_chunk": 1,
+            "timeouts": {
+                "cereal_class_version": 0,
+                "finalize_timeout": 300,
+                "start_acquisition_timeout": 60
+            },
+            "complete_reads": {
+                "cereal_class_version": 0,
+                "max_in_progress_read_memory_seconds": 120,
+                "read_chunk_processing_count": 10000,
+                "hyperstream_buffer_seconds": 60,
+                "max_channels_writing_to_disk_throttle": 20,
+                "memory_storage_bytes": 500000000,
+                "disk_storage_bytes": 250000000000,
+                "disk_channel_change_interval_seconds": 15000,
+                "chunk_processing_threads": 0
+            },
+            "apply_io_priorities": false
+        },
+        "experiment_default": {
+            "cereal_class_version": 0,
+            "writer": {
+                "cereal_class_version": 0,
+                "compression_level": 1,
+                "batch_count": 4000,
+                "fastq_header_pattern": "{read_id} runid={run_id} read={read_number} ch={channel_name} start_time={read_start_time} flow_cell_id={flow_cell_id} protocol_group_id={protocol_group_id} sample_id={sample_id} parent_read_id={parent_read_id}",
+                "multi_read_file_pattern": "fast5{basecall_status}/{flow_cell_id}_{run_id}_{batch_number}.fast5",
+                "fastq_file_pattern": "fastq{basecall_status}/{flow_cell_id}_{run_id}_{batch_number}.fastq",
+                "bam_file_pattern": "bam{basecall_status}/{flow_cell_id}_{run_id}_{batch_number}.bam",
+                "fastq_compression": false,
+                "pbread_file_pattern": "pbread{basecall_status}/{batch_number}/{flow_cell_id}_{run_id}_ch_{channel_name}_read_{read_number}.pbread",
+                "sequencing_summary_file_pattern": "sequencing_summary_{flow_cell_id}_{short_run_id}.txt",
+                "pdf_report_file_pattern": "report_{flow_cell_id}_{daq_start_time}_{short_protocol_run_id}.pdf",
+                "markdown_report_file_pattern": "report_{flow_cell_id}_{daq_start_time}_{short_protocol_run_id}.md",
+                "duty_time_report_file_pattern": "duty_time_{flow_cell_id}_{short_run_id}.csv",
+                "throughput_report_file_pattern": "throughput_{flow_cell_id}_{short_run_id}.csv",
+                "final_summary_report_file_pattern": "final_summary_{flow_cell_id}_{short_run_id}.txt",
+                "barcode_alignment_report_file_pattern": "barcode_alignment_{flow_cell_id}_{short_run_id}.tsv",
+                "custom_report_suffix_file_pattern": "_{flow_cell_id}_{short_run_id}",
+                "bulk_file_pattern": "{machine_id}_{daq_start_time}_{flow_cell_id}_{device_id}_{protocol_purpose}_{sample_id}_{short_run_id}.fast5",
+                "basecall_status_fail": "_fail",
+                "basecall_status_skip": "_skip",
+                "basecall_status_pass": "_pass",
+                "basecall_status_not_run": "",
+                "basecall_status_target": "_target"
+            },
+            "use_rle_compression_only": false,
+            "default_analysis_conf_file": "./conf/default_analysis_conf.json",
+            "max_statistics_data_in_days": 14,
+            "max_boxplots_count_in_days": 14,
+            "boxplot_time_coverage_in_minutes": 10,
+            "basecalled_stats_refresh_rate_seconds": 1,
+            "stats_telemetry_segmentation_seconds": 3600
+        },
+        "device": {
+            "cereal_class_version": 0,
+            "device_id": "",
+            "simulator_device_count": 1,
+            "temperatures": {
+                "cereal_class_version": 0,
+                "default_target_temperature": 35,
+                "safety_warning_max_temperature_celsius": 49,
+                "max_user_setpoint_temperature_celsius": 40,
+                "min_user_setpoint_temperature_celsius": 30,
+                "temperature_warning_grace_minutes": 0,
+                "temperature_warning_after_minutes": 1,
+                "temperature_warning_rearm_minutes": 5,
+                "verify_temperature_set_point": true,
+                "verify_temperature_max": true,
+                "end_experiment_after_set_point_warning": false,
+                "set_temperature_hysteresis_celsius": 1,
+                "diagnostic_temperature_logging": false
+            },
+            "opx_device": {
+                "cereal_class_version": 0,
+                "device_path": "/dev/promethion_0",
+                "startup_frame_count_minimum": 10000,
+                "fail_on_bad_startup_adc_values": true
+            },
+            "asicb_device": {
+                "cereal_class_version": 0,
+                "use_bulk_endpoints": true,
+                "powered_when_idle": false,
+                "flongle_powered_when_idle": true
+            },
+            "minion_pcie_device": {
+                "cereal_class_version": 0,
+                "device_path": "/dev/flowcell0"
+            },
+            "asic_polling": true,
+            "asic_poll_wait": 1000
+        },
+        "saturation": {
+            "cereal_class_version": 0,
+            "software_saturation_enabled": true,
+            "software_saturation_limit_min": -4000,
+            "software_saturation_limit_max": 4000,
+            "saturation_count_threshold": 10,
+            "enable_in_replay": false
+        },
+        "mux_decision": {
+            "cereal_class_version": 0,
+            "ms_interval_decision_checks": 250,
+            "unblock_delay_hw_saturation_restore_seconds": 0.10000000149011612
+        },
+        "data_streaming": {
+            "cereal_class_version": 0,
+            "ms_interval_channel_states_check": 500,
+            "channel_states_stall_check_seconds": 60,
+            "flow_cell_health_interval_minutes": 1,
+            "get_signal_bytes_max_backlog": 4096,
+            "get_signal_min_max_max_backlog": 256
+        },
+        "hyperstream": {
+            "cereal_class_version": 0,
+            "raw_data_intermediate": {
+                "cereal_class_version": 0,
+                "size": 400,
+                "blocks_per_file": 51200,
+                "max_open_files": 0
+            },
+            "raw_meta_data_intermediate": {
+                "size": 400,
+                "blocks_per_file": 1000,
+                "max_open_files": 0
+            },
+            "device_command_data_intermediate": {
+                "size": 4,
+                "blocks_per_file": 64,
+                "max_open_files": 0
+            },
+            "read_data_intermediate": {
+                "size": 128,
+                "blocks_per_file": 512,
+                "max_open_files": 10
+            },
+            "complete_read_analysis_data_intermediate": {
+                "size": 128,
+                "blocks_per_file": 512,
+                "max_open_files": 2
+            },
+            "channel_state_data_intermediate": {
+                "size": 64,
+                "blocks_per_file": 512,
+                "max_open_files": 10
+            },
+            "event_data_intermediate": {
+                "size": 1024,
+                "blocks_per_file": 2048,
+                "max_open_files": 1
+            },
+            "raw_cache_data_intermediate": {
+                "size": 64,
+                "blocks_per_file": 512,
+                "max_open_files": 10
+            },
+            "basecall_sequence_data_intermediate": {
+                "size": 2048,
+                "blocks_per_file": 20480,
+                "max_open_files": 1
+            },
+            "basecall_event_sequence_data_intermediate": {
+                "size": 512,
+                "blocks_per_file": 4096,
+                "max_open_files": 1
+            },
+            "read_reader_timeout": 300,
+            "force_event_data_to_disk": false
+        },
+        "shared_memory": {
+            "cereal_class_version": 0,
+            "shared_raw_cache_memory_size": 500,
+            "raw_cache_max_request_size": 250,
+            "shared_channel_states_memory_size": 32,
+            "shared_reads_index_memory_size": 5000
+        },
+        "crash_handling": {
+            "cereal_class_version": 0,
+            "pipe_name": ""
+        },
+        "installers": {
+            "cereal_class_version": 0,
+            "ui_installation": "/opt/ont/minknow-ui/MinKNOW"
+        },
+        "reports": {
+            "cereal_class_version": 0,
+            "ui_extra_arguments": ""
+        },
+        "guppy": {
+            "cereal_class_version": 0,
+            "connection": {
+                "cereal_class_version": 0,
+                "server_port": 5555,
+                "server_ipc_file": "/tmp/.guppy/5555",
+                "use_tcp": false
+            },
+            "server_config": {
+                "cereal_class_version": 0,
+                "server_executable": "/usr/bin/guppy_basecall_server",
+                "gpu_calling": false,
+                "gpu_devices": "cuda:all",
+                "num_threads": 0,
+                "ipc_threads": 3,
+                "gpu_runners_per_device": 0,
+                "chunks_per_runner": 0,
+                "extra_arguments": "",
+                "server_data_path": {
+                    "value0": ""
+                },
+                "max_queued_reads": 5000,
+                "log_path": {
+                    "value0": "/var/log/minknow/guppy"
+                }
+            },
+            "max_client_queued_reads": 20000,
+            "max_samples_in_flight": 50000000,
+            "client_reconnect_attempts": 3,
+            "max_refused_reads_before_restart": 5000,
+            "client_executable": "/usr/bin/guppy_basecall_client",
+            "barcoding_executable": "/usr/bin/guppy_barcoder",
+            "alignment_executable": "/usr/bin/guppy_aligner",
+            "minimap_executable": "/usr/bin/minimap2",
+            "config_file": "dna_r9.4.1_450bps_fast.cfg",
+            "start_guppy_from_minknow": false,
+            "client_data_path": {
+                "value0": ""
+            },
+            "file_load_timeout_secs": 600,
+            "client_timeout": 5000
+        },
+        "script_entrypoint": "conf/package/utility/protocol_selector.py",
+        "host_type": "PC",
+        "pdf_report": true,
+        "writer": {
+            "cereal_class_version": 0,
+            "open_file_handles": 200,
+            "max_data_file_read_ahead": 2,
+            "max_pending_hdf_tasks": 500,
+            "raw_chunk_size": 180480,
+            "event_chunk_size": 6144,
+            "read_chunk_size": 512,
+            "multiplex_chunk_size": 1024,
+            "states_chunk_size": 2048,
+            "read_analysis_chunk_size": 256,
+            "basecall_sequence_chunk_size": 5120,
+            "basecall_events_chunk_size": 1024
+        },
+        "protocols": {
+            "cereal_class_version": 0,
+            "run_on_flow_cell_insertion": ""
+        },
+        "firmware_load_delay_milliseconds": 0
+    }
+}
