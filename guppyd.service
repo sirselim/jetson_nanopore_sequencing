@@ -1,15 +1,21 @@
 [Unit]
 Description=Service to manage the guppy basecall server.
 Documentation=https://community.nanoporetech.com/protocols/Guppy-protocol/v/GPB_2003_v1_revQ_14Dec2018
+#After=nvpmodel.service
+# Disable start rate limiting -- the service will try and restart itself forever.
+StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/guppy_basecall_server --log_path /var/log/guppy --config dna_r9.4.1_450bps_fast.cfg --port 5555 -x cuda:all 
+Environment="LD_LIBRARY_PATH=/usr/lib/nvidia-current-ont:$LD_LIBRARY_PATH"
+ExecStart=/opt/ont/guppy/bin/guppy_basecall_server --log_path /var/log/guppy --config dna_r9.4.1_450bps_fast.cfg --num_callers 1 --ipc_threads 1 --gpu_runners_per_device 2 --chunks_per_runner 64 --device cuda:all --port /tmp/.guppy/5555
 Restart=always
-User=root
-MemoryLimit=8G
-MemoryHigh=8G
-CPUQuota=200%
+# Wait ten seconds in-between restarts, to avoid spam if the service starts crashing frequently.
+RestartSec=10
+User=minit
+MemoryLimit=6G
+MemoryHigh=6G
+CPUQuota=600%
 
 [Install]
 Alias=guppyd.service
