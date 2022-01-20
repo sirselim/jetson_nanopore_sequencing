@@ -1,4 +1,4 @@
-# Last modified: 2021/11/31 21:47:42
+## Last modified: 2022/01/20 14:43:10
 
 # IMPORTANT: this guide installs ONT software from the M1kc repository, moving forward 
 # this will become the supported "software stack" to install on arm-based Nvidia Jetson 
@@ -19,7 +19,7 @@
 
 
 # 1. get everything together before we start
-# ensure in /home/minit dir
+# ensure we start in /home/minit dir
 cd ~/
 # clone repo
 git clone https://github.com/sirselim/jetson_nanopore_sequencing.git
@@ -28,11 +28,10 @@ cd ./jetson_nanopore_sequencing
 # NOTE: minknow requires specific versions of guppy for live base calling, using the wrong version will result 
 # in crashes you can find an updated table of compatible versions here: 
 # https://github.com/sirselim/jetson_nanopore_sequencing#minknow--guppy-compatibility
-# this is the latest version of guppy for the current Minknow in release (21.05.25, minknow-core 5.0.16)
-wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_5.0.16_linuxaarch64_cuda10.tar.gz
+# this is the latest version of guppy for the current Minknow in release (21.11.6, minknow-core 5.1.12)
+wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_5.1.12_linuxaarch64_cuda10.tar.gz
 # extract required packages
 tar -xzvf *_linuxaarch64_cuda10.tar.gz
-unzip ./libs/python3.7/h5py.zip 
 
 
 # 2. full system update and upgrade
@@ -41,16 +40,8 @@ sudo apt update
 sudo apt upgrade
 
 
-# TODO - this is making assumptions about previously created partitions
-# NOTE: you may not require this step, it depends on your storage setup
-# 3. mount ssd (this should be properly done, place holder for now)
-sudo mkdir /xavier_ssd
-sudo mkdir /xavier_ssd/minknow
-sudo mount /dev/nvme0n1p1 /xavier_ssd/
-
-
-# 4. add nanopore repo to system and update
-sudo cp nanoporetech.list /etc/apt/sources.list.d/
+# 3. add nanopore repo to system and update
+sudo cp nanoporetech.sources.list /etc/apt/sources.list.d/
 # add key
 wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
 # copy the apt sources file from this repo to system to ensure pointing at mk1c repository
@@ -59,7 +50,7 @@ sudo cp nanoporetech.sources.list /etc/apt/sources.list.d/
 sudo apt update
 
 
-# 5. install ont packages
+# 4. install ont packages
 # this step is pulling from the latest ONT repo with Mk1c packages
 # if you are building from cached debs replace this step with 'dpkg -i *.deb'
 # 12 packages required:
@@ -83,7 +74,7 @@ sudo apt install minknow-core-minion-1c-offline ont-bream4-mk1c \
 
 # NOTE: this step has been modified after the release of guppy 4.2.2, which introduces guppy_basecall_client
 # in place of the guppy_basecaller
-# 6. copy guppy binaries to correct location, create sym links and check links and guppy version
+# 5. copy guppy binaries to correct location, create sym links and check links and guppy version
 sudo cp -r ont-guppy /opt/ont/
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller /usr/bin/guppy_basecaller
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_client /usr/bin/guppy_basecall_client
@@ -101,7 +92,7 @@ guppy_basecall_client --version
 minimap2 --version
 
 
-# 7. edit the minknow conf files to change the location of data and check guppy paths and parameters
+# 6. edit the minknow conf files to change the location of data and check guppy paths and parameters
 # this can be done manually by using a text editor such as nano, this assumes you know what you want to edit:
 #cd /opt/ont/minknow/conf
 #sudo nano user_conf 
@@ -110,12 +101,11 @@ minimap2 --version
 # edit the app_conf file
 sudo /opt/ont/minknow/bin/config_editor --conf application \
   --filename /opt/ont/minknow/conf/app_conf \
-  --set guppy.server_executable="/usr/bin/guppy_basecall_server" \
+  --set guppy.server_config.server_executable="/usr/bin/guppy_basecall_server" \
   --set guppy.client_executable="/usr/bin/guppy_basecall_client" \
   --set guppy.barcoding_executable="/usr/bin/guppy_basecall_barcoder" \
   --set guppy.alignment_executable="/usr/bin/guppy_basecall_aligner" \
-  --set guppy.minimap_executable="/usr/bin/minimap2" \
-  --set guppy.chunks_per_runner="64"
+  --set guppy.minimap_executable="/usr/bin/minimap2" 
 # NOTE: you can adjust chunks_per_runner depending on you available GPU, the default is 48, we've found 64 to be 
 # a good spot for the Jetson Xavier NX
 # edit the user_conf to set a user define storage location (and log file location if desired)
@@ -125,24 +115,14 @@ sudo /opt/ont/minknow/bin/config_editor --conf user \
   --set output_dirs.logs="/data/minknow/log/minknow"
 
 
-# TODO: remove this step as no longer required
-# NOTE: this step is no longer required with latest mk1c builds - skip to the next step.
-# 8. install libhdf5-dev and copy across pre-compiled h5py (after removing old version)
-# move back to git repo dir 
-#cd ~/jetson_nanopore_sequencing
-#sudo apt install libhdf5-dev
-#sudo rm -rf /opt/ont/minknow/ont-python/lib/python3.7/site-packages/h5py/
-#sudo cp -r libs/python3.7/h5py/ /opt/ont/minknow/ont-python/lib/python3.7/site-packages/
-
-
-# 9. prevent boot into MinKNOW UI
+# 7. prevent boot into MinKNOW UI
 # there is a script that will start the Kingfisher UI upon log in, we can stop this to get a full desktop environment
 sudo sed -i '1 s/^/#/' /etc/xprofile
 # to revert this if you want to essentially have a mk1c and not access the desktop
 sudo sed -i '1 s/#//' /etc/xprofile
 
 
-# 10. need to overwrite the values that identify the new device as a MinION Mk1c
+# 8. need to overwrite the values that identify the new device as a MinION Mk1c
 # TODO - this is a horrible hack currently! At this stage we're hacking the Mk1c software to make it more "universal" for ARM devices.
 # hopefully ONT will eventually release a mainline ARM64 version of the software that isn't tied to a specific device
 # edit /etc/oxfordnanopore/configs/identity.config
@@ -154,7 +134,7 @@ sudo sed -i -e 's/Serial=.*/Serial=NONE/g' -e 's/ProductCode=.*/ProductCode=NONE
 sudo sed -i -e 's/"device_type":.*/"device_type": "MinION",/' -e 's/"host_type":.*/"host_type": "PC",/' /opt/ont/minknow/conf/app_conf
 
 
-# 11. Correct the MinKNOW UI zoom/scaling and remove the on screen keyboard
+# 9. Correct the MinKNOW UI zoom/scaling and remove the on screen keyboard
 # The Mk1c software is designed to run on small 7inch touch screens, so there is a zoom factor that scales the UI and it looks
 # bad on bigger screens. The software will also include a pop-up keyboard for touch screens by default. We turn these off.
 sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
@@ -162,43 +142,47 @@ sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/
 sudo sed -i -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
 
 
-# 12. copy minknow.service and guppyd.service across 
+# 10. copy minknow.service and guppyd.service across 
+## minknow.service
 # copy minknow.service for systemd set up and restart the service
 # TODO - check this is still required, and check location of arm systemd files
 # on latest x86_x64 Linux builds minknow.service is located in /lib/systemd/system/
 # it likely doesn't matter, either seem to be respected
-sudo cp minknow.service /etc/systemd/system/
-service minknow restart
+# stop the service if it already exists
+sudo systemctl stop minknow.service
+# copy across the service file
+sudo cp ./systemd_files/minknow.service /lib/systemd/system/
+# enable the service (if it hasn't been)
+sudo systemctl enable minknow.service
+# start the service
+sudo systemctl start minknow.service
 # check
-service minknow status
-# can check that the services are running as root with htop
-# WARNING: with recent releases of MinKNOW there have been issues with directory permissions, and the Mk1b device not being detected
-# a quick and dirty fix for this is to change the user and group from 'minknow' to 'root'. If you have these issues you can do run the below:
-sudo sed -i -e 's/User=.*/User=root/g' -e 's/Group=.*/Group=root/g' /lib/systemd/system/minknow.service
-# if you ever want to set this back to minknow that's easy as well:
-sudo sed -i -e 's/User=.*/User=minknow/g' -e 's/Group=.*/Group=minknow/g' /lib/systemd/system/minknow.service
-# just remember to always restart the service after modifying any of these files
+systemctl status minknow.service
 #
+# WARNING: with recent releases of MinKNOW there have been issues with directory permissions, and the Mk1b device not being detected
+# a quick and dirty fix for this is to change the user and group from 'minit' to 'root'. If you have these issues you can run the below:
+sudo sed -i -e 's/User=.*/User=root/g' -e 's/Group=.*/Group=root/g' /lib/systemd/system/minknow.service
+# if you ever want to set this back to minit that's easy as well:
+sudo sed -i -e 's/User=.*/User=minit/g' -e 's/Group=.*/Group=minit/g' /lib/systemd/system/minknow.service
+# IMPORTANT: remember to always restart the service after modifying any of these systemd files
+#
+## guppyd.service
+# stop the service if it is already present
 sudo systemctl stop guppyd.service
-# copy guppyd.service for systemd
+# copy guppyd.service to required location
 sudo cp guppyd.service /lib/systemd/system/
+# enable the service (if it hasn't been)
 sudo systemctl enable guppyd.service
+# start the service
 sudo systemctl start guppyd.service
 # check
 systemctl status guppyd.service
 # NOTE: the guppyd.service file contained in this repository is set with 8GB GPUs in mind, i.e. the Jetson Xavier NX
 # these memory values can be edited to suit the GPU specs of a particular card/device, i.e. for the Xavier AGX a user
-# might modify values to something like 24GB or even 32GB (I currently haven't test this)
+# might modify values to something like 24GB or even 32GB
 
 
-## ONT have removed these binaries in a recent update making this step obsolete
-# 13. Initialise attached MinIONs
-# we have found that sometimes the MinION Mk1b isn't appearing/available in the MinKNOW UI
-# running the below should load the correct firmware and initialise the device
-#sudo /opt/ont/minknow/bin/minion_ctl init
-
-
-# 14. you may require a system reboot at this stage. This is not always required, but for some people it sometimes fixes "niggles".
+# 11. you may require a system reboot at this stage. This is not always required, but for some people it sometimes fixes "niggles".
 # TODO - confirm if this is required. I don't believe this to be required, but as a final hail mary it could be an option.
 
 

@@ -1,5 +1,8 @@
 [Unit]
-Description=MinKNOW Instrument Software for MinIT (daemon)
+Description=MinKNOW Instrument Software for ARM64 Jetson Portable Compute (daemon)
+Wants=guppyd.service
+After=guppyd.service
+Before=display-manager.service
 
 [Service]
 ExecStart=/opt/ont/minknow/bin/mk_manager_svc
@@ -12,6 +15,7 @@ LogsDirectory=minknow
 LimitCORE=infinity
 LimitNICE=40
 NoNewPrivileges=true
+Type=Notify
 ExecStartPre=/bin/sleep 15
 CPUQuota=300%
 
