@@ -41,11 +41,10 @@ sudo apt upgrade
 
 
 # 3. add nanopore repo to system and update
+# copy the apt sources file from this repo to system to ensure pointing at mk1c repository
 sudo cp nanoporetech.sources.list /etc/apt/sources.list.d/
 # add key
 wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
-# copy the apt sources file from this repo to system to ensure pointing at mk1c repository
-sudo cp nanoporetech.sources.list /etc/apt/sources.list.d/
 # update repos
 sudo apt update
 
