@@ -12,7 +12,7 @@ ExecStart=/usr/bin/guppy_basecall_server --log_path /var/log/guppy --config dna_
 Restart=always
 # Wait ten seconds in-between restarts, to avoid spam if the service starts crashing frequently.
 RestartSec=10
-User=minit
+User=root
 MemoryLimit=6G
 MemoryHigh=6G
 CPUQuota=600%
