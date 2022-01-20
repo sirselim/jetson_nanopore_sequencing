@@ -1,4 +1,4 @@
-## Last modified: 2022/01/20 14:43:10
+## Last modified: 2022/01/20 16:05:29
 
 # IMPORTANT: this guide installs ONT software from the M1kc repository, moving forward 
 # this will become the supported "software stack" to install on arm-based Nvidia Jetson 
@@ -83,13 +83,6 @@ sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller_supervisor /usr/bin/guppy_bas
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_barcoder /usr/bin/guppy_barcoder
 sudo ln -s /opt/ont/ont-guppy/bin/guppy_aligner /usr/bin/guppy_aligner
 sudo ln -s /opt/ont/ont-guppy/bin/minimap2 /usr/bin/minimap2
-# can check versions linked are correct
-guppy_basecaller --version
-guppy_basecall_server --version
-guppy_aligner --version
-guppy_barcoder --version
-guppy_basecall_client --version
-minimap2 --version
 
 
 # 6. edit the minknow conf files to change the location of data and check guppy paths and parameters
