@@ -179,9 +179,11 @@ sudo sed -i -e 's/User=.*/User=root/g' -e 's/Group=.*/Group=root/g' /lib/systemd
 sudo sed -i -e 's/User=.*/User=minknow/g' -e 's/Group=.*/Group=minknow/g' /lib/systemd/system/minknow.service
 # just remember to always restart the service after modifying any of these files
 #
-# copy guppyd.service for systemd and check it's running
+sudo systemctl stop guppyd.service
+# copy guppyd.service for systemd
 sudo cp guppyd.service /lib/systemd/system/
-sudo systemctl restart guppyd.service
+sudo systemctl enable guppyd.service
+sudo systemctl start guppyd.service
 # check
 systemctl status guppyd.service
 # NOTE: the guppyd.service file contained in this repository is set with 8GB GPUs in mind, i.e. the Jetson Xavier NX
@@ -189,10 +191,12 @@ systemctl status guppyd.service
 # might modify values to something like 24GB or even 32GB (I currently haven't test this)
 
 
+## ONT have removed these binaries in a recent update making this step obsolete
 # 13. Initialise attached MinIONs
 # we have found that sometimes the MinION Mk1b isn't appearing/available in the MinKNOW UI
 # running the below should load the correct firmware and initialise the device
-sudo /opt/ont/minknow/bin/minion_ctl init
+#sudo /opt/ont/minknow/bin/minion_ctl init
+
 
 # 14. you may require a system reboot at this stage. This is not always required, but for some people it sometimes fixes "niggles".
 # TODO - confirm if this is required. I don't believe this to be required, but as a final hail mary it could be an option.
