@@ -118,6 +118,9 @@ sudo sed -i '1 s/#//' /etc/xprofile
 # TODO - this is a horrible hack currently! At this stage we're hacking the Mk1c software to make it more "universal" for ARM devices.
 # hopefully ONT will eventually release a mainline ARM64 version of the software that isn't tied to a specific device
 # edit /etc/oxfordnanopore/configs/identity.config
+# there is an error that this file can't be edited due to having an immutable flag, fix this:
+sudo chattr -i /etc/oxfordnanopore/configs/identity.config
+# now edit required values
 sudo sed -i -e 's/Serial=.*/Serial=NONE/g' -e 's/ProductCode=.*/ProductCode=NONE/g' -e 's/Class=.*/Class=NONE/g' -e 's/Build=.*/Build=NONE/g' /etc/oxfordnanopore/configs/identity.config   
 # Note: you can replace the Serial value of "NONE" with a value of your choice here if desired 
 # (i.e. "My-XavNX", this is the value that will be used to name the device in ONT tools such as MinKNOW
