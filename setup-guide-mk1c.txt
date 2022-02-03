@@ -111,7 +111,8 @@ sudo /opt/ont/minknow/bin/config_editor --conf user \
 # there is a script that will start the Kingfisher UI upon log in, we can stop this to get a full desktop environment
 sudo sed -i '1 s/^/#/' /etc/xprofile
 # to revert this if you want to essentially have a mk1c and not access the desktop
-sudo sed -i '1 s/#//' /etc/xprofile
+# sudo sed -i '1 s/#//' /etc/xprofile
+# remember to uncomment (remove the #) the above line to run it in your terminal
 
 
 # 8. need to overwrite the values that identify the new device as a MinION Mk1c
@@ -134,7 +135,8 @@ sudo sed -i -e 's/"device_type":.*/"device_type": "MinION",/' -e 's/"host_type":
 # bad on bigger screens. The software will also include a pop-up keyboard for touch screens by default. We turn these off.
 sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
 # Note: if you are using a touch screen and would like the on screen keyboard then use the below:
-sudo sed -i -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
+# sudo sed -i -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
+# remember to uncomment (remove the #) the above line to run it in your terminal
 
 
 # 10. copy minknow.service and guppyd.service across 
