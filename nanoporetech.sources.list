@@ -1,7 +1,7 @@
-# mk1c xenial stable
-deb [arch=arm64] https://cdn.oxfordnanoportal.com/apt xenial-stable-mk1c non-free
-deb [arch=arm64] https://mirror.oxfordnanoportal.com/apt xenial-stable-mk1c non-free
+# mk1c xenial stable - now discontinued 
+#deb [arch=arm64] https://cdn.oxfordnanoportal.com/apt xenial-stable-mk1c non-free
+#deb [arch=arm64] https://mirror.oxfordnanoportal.com/apt xenial-stable-mk1c non-free
 
-# mk1c bionic - assuming these will become viable soon
-#deb [arch=arm64] https://cdn.oxfordnanoportal.com/apt bionic-stable-mk1c non-free
-#deb [arch=arm64] https://mirror.oxfordnanoportal.com/apt bionic-stable-mk1c non-free
+# mk1c bionic repos 
+deb [arch=arm64] https://cdn.oxfordnanoportal.com/apt bionic-stable-mk1c non-free
+deb [arch=arm64] https://mirror.oxfordnanoportal.com/apt bionic-stable-mk1c non-free
