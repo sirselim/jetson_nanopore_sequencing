@@ -1,10 +1,14 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4287656.svg)](https://doi.org/10.5281/zenodo.4287656)
 
-|:exclamation: please be fore warned that by following this set up guide neither the authors or Oxford Nanopore Technology (ONT) are liable for any hardware/consumable damage or data loss.|
+|:exclamation: DISCLAIMER: Oxford Nanopore Technologies is in no way endorsing or supporting this method of installation of MinKNOW, or the devices that it is installed on. Also, please be fore warned that by following this set up guide neither the authors or Oxford Nanopore Technology (ONT) are liable for any hardware/consumable damage or data loss that may arise.|
 |-------------------|
 
 |:memo: for more detailed information please feel free to browse the wiki pages [here](https://github.com/sirselim/jetson_nanopore_sequencing/wiki). |
 |------------------------|
+
+-----
+
+**UPDATE 15<sup>th</sup> Nov 2023:** these notes have been updated to support the latest updates in the ONT software stack, namely the introduction of dorado as the new production basecaller. This means that it is now possible to get a fully working install for sequencing with live basecalling on Jetson Orin based devices. This has been tested and confirmed working on an Nvidia Jetson Orin AGX.
 
 -----
 

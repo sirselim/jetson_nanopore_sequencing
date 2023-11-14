@@ -1,4 +1,16 @@
-## Last modified: 2022/01/20 16:05:29
+## Last modified: 2023/11/15 11:12:08
+
+# DISCLAIMER: Oxford Nanopore Technologies is in no way endorsing or supporting 
+# this method of installation of MinKNOW, or the devices that it is installed on.
+# Also, please be fore warned that by following this set up guide neither the authors 
+# or Oxford Nanopore Technology (ONT) are liable for any hardware/consumable damage
+# or data loss that may arise.
+
+# UPDATE 2023-11-15: these notes have been updated to support the latest updates
+# in the ONT software stack, namely the introduction of dorado as the new production
+# basecaller. This means that it is now possible to get a fully working install for
+# sequencing with live basecalling on Jetson Orin based devices. This has been tested
+# and confirmed working on an Nvidia Jetson Orin AGX.
 
 # IMPORTANT: this guide installs ONT software from the M1kc repository, moving forward 
 # this will become the supported "software stack" to install on arm-based Nvidia Jetson 
@@ -12,7 +24,7 @@
 # where you will need to get your hands dirty. ;)
 
 # 0. pre-setup
-# fresh inistall of Nvidia Jetson JetPack
+# fresh install of Nvidia Jetson JetPack
 # create user: minit with pw: minit
 # TODO - determine whether this is still a requirement. For now it is working so will leave
 # it as it is.
@@ -24,14 +36,6 @@ cd ~/
 # clone repo
 git clone https://github.com/sirselim/jetson_nanopore_sequencing.git
 cd ./jetson_nanopore_sequencing
-# download guppy from ONT servers
-# NOTE: minknow requires specific versions of guppy for live base calling, using the wrong version will result 
-# in crashes you can find an updated table of compatible versions here: 
-# https://github.com/sirselim/jetson_nanopore_sequencing#minknow--guppy-compatibility
-# this is the latest version of guppy for the current Minknow in release (21.11.6, minknow-core 5.1.12)
-wget https://mirror.oxfordnanoportal.com/software/analysis/ont-guppy_5.1.12_linuxaarch64_cuda10.tar.gz
-# extract required packages
-tar -xzvf *_linuxaarch64_cuda10.tar.gz
 
 
 # 2. full system update and upgrade
@@ -52,62 +56,22 @@ sudo apt update
 # 4. install ont packages
 # this step is pulling from the latest ONT repo with Mk1c packages
 # if you are building from cached debs replace this step with 'dpkg -i *.deb'
-# 12 packages required:
-# - minknow-core-minion-1c-offline
-# - ont-bream4-mk1c
-# - ont-configuration-customer-mk1c
-# - ont-kingfisher-ui-mk1c
-# - ont-vbz-hdf-plugin
-# - ont-minion1c-fpga
-# - ont-jwt-auth
-# - ont-minion1c-driver-4.4.38-minit
-# - ont-minion1c-driver-udev
-# - ont-remote-support
-# - ont-system-identification
-# - ont-vbz-hdf-plugin
 # the 'manual' way, these packages will pull in other required depends
 sudo apt install minknow-core-minion-1c-offline ont-bream4-mk1c \
+  ont-dorado-server-for-mk1c ont-dorado-models-for-mk1c \
   ont-configuration-customer-mk1c ont-kingfisher-ui-mk1c \
   ont-vbz-hdf-plugin ont-minion1c-fpga
 
 
-# NOTE: this step has been modified after the release of guppy 4.2.2, which introduces guppy_basecall_client
-# in place of the guppy_basecaller
-# 5. copy guppy binaries to correct location, create sym links and check links and guppy version
-sudo cp -r ont-guppy /opt/ont/
-sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller /usr/bin/guppy_basecaller
-sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_client /usr/bin/guppy_basecall_client
-sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecall_server /usr/bin/guppy_basecall_server
-sudo ln -s /opt/ont/ont-guppy/bin/guppy_basecaller_supervisor /usr/bin/guppy_basecaller_supervisor
-sudo ln -s /opt/ont/ont-guppy/bin/guppy_barcoder /usr/bin/guppy_barcoder
-sudo ln -s /opt/ont/ont-guppy/bin/guppy_aligner /usr/bin/guppy_aligner
-sudo ln -s /opt/ont/ont-guppy/bin/minimap2 /usr/bin/minimap2
-
-
-# 6. edit the minknow conf files to change the location of data and check guppy paths and parameters
+# 5. edit the minknow conf files to change the location of data and enable GPU basecalling
 # this can be done manually by using a text editor such as nano, this assumes you know what you want to edit:
 #cd /opt/ont/minknow/conf
 #sudo nano user_conf 
 #sudo nano app_conf
-# there is a config editor that ONT have made available (which is likely the easier approach to the above)
-# edit the app_conf file
-sudo /opt/ont/minknow/bin/config_editor --conf application \
-  --filename /opt/ont/minknow/conf/app_conf \
-  --set guppy.server_config.server_executable="/usr/bin/guppy_basecall_server" \
-  --set guppy.client_executable="/usr/bin/guppy_basecall_client" \
-  --set guppy.barcoding_executable="/usr/bin/guppy_basecall_barcoder" \
-  --set guppy.alignment_executable="/usr/bin/guppy_basecall_aligner" \
-  --set guppy.minimap_executable="/usr/bin/minimap2" 
-# NOTE: you can adjust chunks_per_runner depending on you available GPU, the default is 48, we've found 64 to be 
-# a good spot for the Jetson Xavier NX
-# edit the user_conf to set a user define storage location (and log file location if desired)
-sudo /opt/ont/minknow/bin/config_editor --conf user \
-  --filename /opt/ont/minknow/conf/user_conf \
-  --set output_dirs.base="/data/minknow" \
-  --set output_dirs.logs="/data/minknow/log/minknow"
+# in app_conf you want to ensure that "gpu_calling" is set to true
 
 
-# 7. prevent boot into MinKNOW UI
+# 6. prevent boot into MinKNOW UI
 # there is a script that will start the Kingfisher UI upon log in, we can stop this to get a full desktop environment
 sudo sed -i '1 s/^/#/' /etc/xprofile
 # to revert this if you want to essentially have a mk1c and not access the desktop
@@ -115,7 +79,7 @@ sudo sed -i '1 s/^/#/' /etc/xprofile
 # remember to uncomment (remove the #) the above line to run it in your terminal
 
 
-# 8. need to overwrite the values that identify the new device as a MinION Mk1c
+# 7. need to overwrite the values that identify the new device as a MinION Mk1c
 # TODO - this is a horrible hack currently! At this stage we're hacking the Mk1c software to make it more "universal" for ARM devices.
 # hopefully ONT will eventually release a mainline ARM64 version of the software that isn't tied to a specific device
 # edit /etc/oxfordnanopore/configs/identity.config
@@ -130,13 +94,27 @@ sudo sed -i -e 's/Serial=.*/Serial=NONE/g' -e 's/ProductCode=.*/ProductCode=NONE
 sudo sed -i -e 's/"device_type":.*/"device_type": "MinION",/' -e 's/"host_type":.*/"host_type": "PC",/' /opt/ont/minknow/conf/app_conf
 
 
-# 9. Correct the MinKNOW UI zoom/scaling and remove the on screen keyboard
+# 8. Correct the MinKNOW UI zoom/scaling and remove the on screen keyboard
 # The Mk1c software is designed to run on small 7inch touch screens, so there is a zoom factor that scales the UI and it looks
 # bad on bigger screens. The software will also include a pop-up keyboard for touch screens by default. We turn these off.
 sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
 # Note: if you are using a touch screen and would like the on screen keyboard then use the below:
 # sudo sed -i -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/share/applications/minknow.desktop
 # remember to uncomment (remove the #) the above line to run it in your terminal
+
+
+# 9. set the correct firmware link
+# because we aren't running the system id package things need a manual adjustment
+# look for the firmware that is installed
+ls -lhart /opt/ont/minknow/conf/firmware/
+# should see something like `MinGrid_fx3_1_2_7_ONT.img`
+# now check the usb_firmware.toml file
+cat /opt/ont/minknow/conf/usb_firmware.toml
+# notice that the toml is linking to firmware that we don't have, change
+# this to reflect the firmware that is installed
+# should look something like the below:
+# minion = "firmware/MinGrid_fx3_1_2_7_ONT.img"
+
 
 
 # 10. copy minknow.service and guppyd.service across 

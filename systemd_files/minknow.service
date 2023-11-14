@@ -1,7 +1,7 @@
 [Unit]
-Description=MinKNOW Instrument Software for ARM64 Jetson Portable Compute (daemon)
-Wants=guppyd.service
-After=guppyd.service
+Description=MinKNOW Instrument Software for MinION 1C (daemon)
+Wants=doradod.service
+After=doradod.service
 Before=display-manager.service
 
 [Service]
@@ -15,10 +15,9 @@ LogsDirectory=minknow
 LimitCORE=infinity
 LimitNICE=40
 NoNewPrivileges=true
-Type=Notify
+Type=notify
 ExecStartPre=/bin/sleep 15
 CPUQuota=300%
 
 
 [Install]
-WantedBy=multi-user.target
