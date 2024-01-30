@@ -1,4 +1,4 @@
-## Last modified: 2023/11/15 11:12:08
+## Last modified: 2024/01/30 07:12:08
 
 # DISCLAIMER: Oxford Nanopore Technologies is in no way endorsing or supporting 
 # this method of installation of MinKNOW, or the devices that it is installed on.
@@ -25,13 +25,9 @@
 
 # 0. pre-setup
 # fresh install of Nvidia Jetson JetPack
-# create user: minit with pw: minit
-# TODO - determine whether this is still a requirement. For now it is working so will leave
-# it as it is.
 
 
 # 1. get everything together before we start
-# ensure we start in /home/minit dir
 cd ~/
 # clone repo
 git clone https://github.com/sirselim/jetson_nanopore_sequencing.git
@@ -48,7 +44,7 @@ sudo apt upgrade
 # copy the apt sources file from this repo to system to ensure pointing at mk1c repository
 sudo cp nanoporetech.sources.list /etc/apt/sources.list.d/
 # add key
-wget -O- https://mirror.oxfordnanoportal.com/apt/ont-repo.pub | sudo apt-key add -
+sudo wget -O /etc/apt/trusted.gpg.d/ont-repo.asc https://mirror.oxfordnanoportal.com/apt/ont-repo.pub
 # update repos
 sudo apt update
 
@@ -109,7 +105,7 @@ sudo sed -i -e 's/--keyboard //g' -e 's/--zoom-factor 2/--zoom-factor 1/g' /usr/
 ls -lhart /opt/ont/minknow/conf/firmware/
 # should see something like `MinGrid_fx3_1_2_7_ONT.img`
 # now check the usb_firmware.toml file
-cat /opt/ont/minknow/conf/usb_firmware.toml
+sudo nano /opt/ont/minknow/conf/usb_firmware.toml
 # notice that the toml is linking to firmware that we don't have, change
 # this to reflect the firmware that is installed
 # should look something like the below:
@@ -119,26 +115,21 @@ cat /opt/ont/minknow/conf/usb_firmware.toml
 
 # 10. copy minknow.service and guppyd.service across 
 ## minknow.service
-# copy minknow.service for systemd set up and restart the service
-# TODO - check this is still required, and check location of arm systemd files
-# on latest x86_x64 Linux builds minknow.service is located in /lib/systemd/system/
-# it likely doesn't matter, either seem to be respected
+
 # stop the service if it already exists
 sudo systemctl stop minknow.service
-# copy across the service file
-sudo cp ./systemd_files/minknow.service /lib/systemd/system/
-# enable the service (if it hasn't been)
-sudo systemctl enable minknow.service
-# start the service
-sudo systemctl start minknow.service
-# check
-systemctl status minknow.service
-#
-# WARNING: with recent releases of MinKNOW there have been issues with directory permissions, and the Mk1b device not being detected
+
+# WARNING: with recent releases of MinKNOW there have been issues with libusb permissions, and the Mk1b device not being accessible
 # a quick and dirty fix for this is to change the user and group from 'minit' to 'root'. If you have these issues you can run the below:
-sudo sed -i -e 's/User=.*/User=root/g' -e 's/Group=.*/Group=root/g' /lib/systemd/system/minknow.service
+sudo systemctl edit minknow.service
+# in the opened editor, add the following section (# not included)
+# [Service]
+# User=root
+# Group=root
+
 # if you ever want to set this back to minit that's easy as well:
-sudo sed -i -e 's/User=.*/User=minit/g' -e 's/Group=.*/Group=minit/g' /lib/systemd/system/minknow.service
+sudo systemctl edit minknow.service
+# in the opened editor, remove all content, save, and quit.
 # IMPORTANT: remember to always restart the service after modifying any of these systemd files
 #
 ## guppyd.service
